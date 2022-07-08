@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  myonlinestore:
+    image: ${DOCKER_REGISTRY-}myonlinestore
+    build:
+      context: .
+      dockerfile: MyOnlineStore/Dockerfile
+
+  authdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest

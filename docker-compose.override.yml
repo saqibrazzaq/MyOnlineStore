@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  myonlinestore:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "80"
+      - "5010:443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  authdb:
+    volumes:
+      - authdb_data:/var/opt/mssql/data
+    container_name: authdb
+    environment:
+      SA_PASSWORD: "Saqib123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+volumes:
+  authdb_data:

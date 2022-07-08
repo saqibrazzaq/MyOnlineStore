@@ -119,7 +119,7 @@ namespace auth.Services
             {
                 if (_contextAccessor.HttpContext != null &&
                     _contextAccessor.HttpContext.User.Identity != null &&
-                    string.IsNullOrWhiteSpace(_contextAccessor.HttpContext.User.Identity.Name))
+                    string.IsNullOrWhiteSpace(_contextAccessor.HttpContext.User.Identity.Name) == false)
                     return _contextAccessor.HttpContext.User.Identity.Name;
                 else
                     throw new UnauthorizedAccessException("User not logged in");
@@ -226,10 +226,10 @@ namespace auth.Services
         public async Task<TokenDto> RefreshToken(TokenDto dto)
         {
             var principal = GetPrincipalFromExpiredToken(dto.AccessToken);
-            if (principal == null)
+            if (principal == null || principal.Identity == null)
                 throw new BadRequestException("Invalid access token or refresh token");
 
-            string? username = UserName;
+            string? username = principal.Identity.Name;
 
             var userEntity = await _userManager.FindByNameAsync(username);
 
@@ -509,6 +509,12 @@ namespace auth.Services
         private string saveNewFileInTempFolder(IFormFile file)
         {
             var pathToSave = Path.Combine(_environment.WebRootPath, Constants.TempFolderName);
+            
+            if (Directory.Exists(pathToSave) == false)
+            {
+                Directory.CreateDirectory(pathToSave);
+            }
+
             if (file.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + "." + Path.GetExtension(file.FileName);

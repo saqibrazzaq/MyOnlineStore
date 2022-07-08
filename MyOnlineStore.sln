@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logger", "logger\logger.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mailer", "mailer\mailer.csproj", "{8EEEA2A7-83C3-4E9F-A9AF-50717BCB1112}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D00998A1-4B51-44F6-A841-550F6D2BD125}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{8EEEA2A7-83C3-4E9F-A9AF-50717BCB1112}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EEEA2A7-83C3-4E9F-A9AF-50717BCB1112}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EEEA2A7-83C3-4E9F-A9AF-50717BCB1112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D00998A1-4B51-44F6-A841-550F6D2BD125}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D00998A1-4B51-44F6-A841-550F6D2BD125}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D00998A1-4B51-44F6-A841-550F6D2BD125}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D00998A1-4B51-44F6-A841-550F6D2BD125}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
