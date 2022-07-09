@@ -82,6 +82,11 @@ namespace MyOnlineStore.Extensions
         public static void ConfigureCitiesServices(this IServiceCollection services)
         {
             services.AddScoped<ICitiesDataSeedService, CitiesDataSeedService>();
+
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IStateService, StateService>();
+            services.AddScoped<ITimeZoneService, TimeZoneService>();
         }
 
         public static void ConfigureValidationFilter(this IServiceCollection services)
