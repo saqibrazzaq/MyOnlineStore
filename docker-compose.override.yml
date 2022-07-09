@@ -21,5 +21,16 @@ services:
     ports:
       - "1433:1433"
 
+  citiesdb:
+    volumes:
+      - citiesdb_data:/var/opt/mssql/data
+    container_name: citiesdb
+    environment:
+      SA_PASSWORD: "Saqib123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+
 volumes:
   authdb_data:
+  citiesdb_data:
