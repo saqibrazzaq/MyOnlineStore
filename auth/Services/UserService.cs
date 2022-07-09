@@ -29,7 +29,6 @@ namespace auth.Services
     {
         private readonly UserManager<AppIdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IAccountRepository _accountRepository;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
         private readonly IAuthRepositoryManager _repository;
@@ -44,8 +43,7 @@ namespace auth.Services
             IAuthRepositoryManager repository,
             IMapper mapper,
             IHttpContextAccessor contextAccessor,
-            IWebHostEnvironment environment,
-            IAccountRepository accountRepository)
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -55,7 +53,6 @@ namespace auth.Services
             _mapper = mapper;
             _contextAccessor = contextAccessor;
             _environment = environment;
-            _accountRepository = accountRepository;
         }
         public async Task ChangePassword(ChangePasswordRequestDto dto)
         {
@@ -285,7 +282,8 @@ namespace auth.Services
             await CheckExistingEmailAndUsername(dto);
 
             var accountEntity = new Entities.Account();
-            _accountRepository.Create(accountEntity);
+            _repository.AccountRepository.Create(accountEntity);
+            _repository.Save();
 
             // Create the user
             var userEntity = new AppIdentityUser

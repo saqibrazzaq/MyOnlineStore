@@ -8,6 +8,6 @@ namespace auth.Services
 {
     public interface IAuthDataSeedService
     {
-        Task AddDefaultRolesAndUsers();
+        Task Seed();
     }
 }

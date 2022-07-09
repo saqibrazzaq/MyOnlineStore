@@ -11,15 +11,13 @@ LogManager.LoadConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "nlog
 builder.Services.ConfigureCors();
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
-builder.Services.ConfigureServices();
+builder.Services.ConfigureAuthServices();
+builder.Services.ConfigureCitiesServices();
 builder.Services.ConfigureValidationFilter();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwt(builder.Configuration);
-builder.Services.MigrateDatabase();
-builder.Services.SeedDefaultData();
-
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.ConfigureAutoMapper();
 
 builder.Services.AddControllers(config =>
 {
@@ -39,6 +37,11 @@ var app = builder.Build();
 // Configure logger
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
+
+// Seed service requires logger
+builder.Services.MigrateDatabase();
+builder.Services.SeedDefaultData();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

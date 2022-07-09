@@ -2,6 +2,9 @@
 using auth.Entities;
 using auth.Repository;
 using auth.Services;
+using cities.Data;
+using cities.Repository;
+using cities.Services;
 using Common.ActionFilters;
 using logger;
 using mailer;
@@ -40,29 +43,45 @@ namespace MyOnlineStore.Extensions
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
             services.AddScoped<IAuthRepositoryManager, AuthRepositoryManager>();
+            services.AddScoped<ICitiesRepositoryManager, CitiesRepositoryManager>();
+        }
+
+        public static void ConfigureAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(cities.MappingProfile));
         }
 
         public static void MigrateDatabase(this IServiceCollection services)
         {
-            var dbContext = services.BuildServiceProvider().GetRequiredService<AuthDbContext>();
-            dbContext.Database.Migrate();
+            var authContext = services.BuildServiceProvider().GetRequiredService<AuthDbContext>();
+            authContext.Database.Migrate();
+
+            var citiesContext = services.BuildServiceProvider().GetRequiredService<CitiesDbContext>();
+            citiesContext.Database.Migrate();
         }
 
         public static void SeedDefaultData(this IServiceCollection services)
         {
-            var dataSeeder = services.BuildServiceProvider().GetRequiredService<IAuthDataSeedService>();
-            dataSeeder.AddDefaultRolesAndUsers();
+            var authDataSeeder = services.BuildServiceProvider().GetRequiredService<IAuthDataSeedService>();
+            authDataSeeder.Seed();
+
+            var citiesDataSeeder = services.BuildServiceProvider().GetRequiredService<ICitiesDataSeedService>();
+            citiesDataSeeder.Seed();
         }
 
-        public static void ConfigureServices(this IServiceCollection services)
+        public static void ConfigureAuthServices(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-
-            services.AddScoped<IAccountRepository, AccountRepository>();
 
             services.AddScoped<IAuthDataSeedService, AuthDataSeedService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailSender, EmailSender>();
+        }
+
+        public static void ConfigureCitiesServices(this IServiceCollection services)
+        {
+            services.AddScoped<ICitiesDataSeedService, CitiesDataSeedService>();
         }
 
         public static void ConfigureValidationFilter(this IServiceCollection services)
@@ -81,6 +100,10 @@ namespace MyOnlineStore.Extensions
             services.AddDbContext<AuthDbContext>(x => x.UseSqlServer(
                 configuration.GetConnectionString("AuthDbConnection"),
                 x => x.MigrationsAssembly("auth")));
+
+            services.AddDbContext<CitiesDbContext>(x => x.UseSqlServer(
+                configuration.GetConnectionString("CitiesDbConnection"),
+                x => x.MigrationsAssembly("cities")));
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

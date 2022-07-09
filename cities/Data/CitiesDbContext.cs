@@ -10,7 +10,7 @@ namespace cities.Data
 {
     public class CitiesDbContext : DbContext
     {
-        public CitiesDbContext(DbContextOptions options) : base(options)
+        public CitiesDbContext(DbContextOptions<CitiesDbContext> options) : base(options)
         {
         }
 

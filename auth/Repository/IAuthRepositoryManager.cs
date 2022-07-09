@@ -10,6 +10,6 @@ namespace auth.Repository
     {
         IUserRepository UserRepository { get; }
         IAccountRepository AccountRepository { get; }
-        Task SaveAsync();
+        void Save();
     }
 }

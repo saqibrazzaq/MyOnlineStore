@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\logger\logger.csproj" />
   </ItemGroup>
 
 </Project>

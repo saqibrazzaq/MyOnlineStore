@@ -21,7 +21,7 @@ namespace auth.Services
             _configuration = configuration;
         }
 
-        public async Task AddDefaultRolesAndUsers()
+        public async Task Seed()
         {
             // Default roles which should exist
             var roleNames = Constants.AllRoles.Split(',');

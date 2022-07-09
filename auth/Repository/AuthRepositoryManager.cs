@@ -26,9 +26,9 @@ namespace auth.Repository
 
         public IAccountRepository AccountRepository => _accountRepository.Value;
 
-        public async Task SaveAsync()
+        public void Save()
         {
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }
