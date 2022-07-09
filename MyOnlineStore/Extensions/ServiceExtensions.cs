@@ -6,6 +6,9 @@ using cities.Data;
 using cities.Repository;
 using cities.Services;
 using Common.ActionFilters;
+using hr.Data;
+using hr.Repository;
+using hr.Services;
 using logger;
 using mailer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,12 +47,14 @@ namespace MyOnlineStore.Extensions
         {
             services.AddScoped<IAuthRepositoryManager, AuthRepositoryManager>();
             services.AddScoped<ICitiesRepositoryManager, CitiesRepositoryManager>();
+            services.AddScoped<IHrRepositoryManager, HrRepositoryManager>();
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddAutoMapper(typeof(cities.MappingProfile));
+            services.AddAutoMapper(typeof(hr.MappingProfile));
         }
 
         public static void MigrateDatabase(this IServiceCollection services)
@@ -59,6 +64,9 @@ namespace MyOnlineStore.Extensions
 
             var citiesContext = services.BuildServiceProvider().GetRequiredService<CitiesDbContext>();
             citiesContext.Database.Migrate();
+
+            var hrContext = services.BuildServiceProvider().GetRequiredService<HrDbContext>();
+            hrContext.Database.Migrate();
         }
 
         public static void SeedDefaultData(this IServiceCollection services)
@@ -68,6 +76,9 @@ namespace MyOnlineStore.Extensions
 
             var citiesDataSeeder = services.BuildServiceProvider().GetRequiredService<ICitiesDataSeedService>();
             citiesDataSeeder.Seed();
+
+            var hrDataSeeder = services.BuildServiceProvider().GetRequiredService<IHrDataSeedService>();
+            hrDataSeeder.Seed();
         }
 
         public static void ConfigureAuthServices(this IServiceCollection services)
@@ -87,6 +98,13 @@ namespace MyOnlineStore.Extensions
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IStateService, StateService>();
             services.AddScoped<ITimeZoneService, TimeZoneService>();
+        }
+
+        public static void ConfigureHrServices(this IServiceCollection services)
+        {
+            services.AddScoped<IHrDataSeedService, HrDataSeedService>();
+
+            services.AddScoped<ICompanyService, CompanyService>();
         }
 
         public static void ConfigureValidationFilter(this IServiceCollection services)
@@ -109,6 +127,10 @@ namespace MyOnlineStore.Extensions
             services.AddDbContext<CitiesDbContext>(x => x.UseSqlServer(
                 configuration.GetConnectionString("CitiesDbConnection"),
                 x => x.MigrationsAssembly("cities")));
+
+            services.AddDbContext<HrDbContext>(x => x.UseSqlServer(
+                configuration.GetConnectionString("HrDbConnection"),
+                x => x.MigrationsAssembly("hr")));
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

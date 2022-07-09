@@ -13,6 +13,7 @@ builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureAuthServices();
 builder.Services.ConfigureCitiesServices();
+builder.Services.ConfigureHrServices();
 builder.Services.ConfigureValidationFilter();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureIdentity();

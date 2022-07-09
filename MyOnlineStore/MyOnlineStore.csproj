@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\auth\auth.csproj" />
     <ProjectReference Include="..\cities\cities.csproj" />
+    <ProjectReference Include="..\hr\hr.csproj" />
     <ProjectReference Include="..\logger\logger.csproj" />
     <ProjectReference Include="..\mailer\mailer.csproj" />
   </ItemGroup>
