@@ -1,3 +1,4 @@
+using Common.JsonConverters;
 using logger;
 using MyOnlineStore.Extensions;
 using NLog;
@@ -27,6 +28,7 @@ builder.Services.AddControllers(config =>
 }).AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    x.JsonSerializerOptions.Converters.Add(new JsonStringGuidConverter());
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

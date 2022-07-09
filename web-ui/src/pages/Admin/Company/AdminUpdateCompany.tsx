@@ -24,7 +24,6 @@ import { Link as RouteLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Field, Formik } from "formik";
 import AuthModel from "../../../Models/User/AuthModel";
-import HrApi from "../../../Api/HrApi";
 import SubmitButton from "../../../components/Buttons/SubmitButton";
 import UpdateCompanyRequestParams from "../../../Models/Hr/Company/UpdateCompanyRequestParams";
 import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompanyIdRequestParams";
@@ -39,6 +38,7 @@ import CityResponseDto from "../../../Models/Cities/City/CityResponseDto";
 import CityStateCountryDropdown from "../../../components/Dropdowns/CityStateCountryDropdown";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
 import citiesApi from "../../../Api/citiesApi";
+import useAxiosAuth from "../../../hooks/useAxiosAuth";
 
 const AdminUpdateCompany = () => {
   const [selectedCity, setSelectedCity] = useState<CityDetailResponseDto>();
@@ -47,6 +47,7 @@ const AdminUpdateCompany = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { auth }: AuthModel = useAuth();
+  const axiosPrivate = useAxiosAuth();
   const navigate = useNavigate();
   let params = useParams();
   const companyId = params.companyId;
@@ -64,7 +65,7 @@ const AdminUpdateCompany = () => {
   }, [companyId]);
 
   const loadCompanyDetails = () => {
-    HrApi.get("Companies/" + companyId, {
+    axiosPrivate.get("Companies/" + companyId, {
       params: findCompanyReq,
     })
       .then((res) => {
@@ -99,7 +100,7 @@ const AdminUpdateCompany = () => {
 
   const createCompany = (values: UpdateCompanyRequestParams) => {
     console.log(values);
-    HrApi.post("Companies", values)
+    axiosPrivate.post("Companies", values)
       .then((res) => {
         setSuccess("Company created successfully. ");
         navigate("/admin/company/update/" + res.data.companyId);
@@ -113,7 +114,7 @@ const AdminUpdateCompany = () => {
   };
 
   const updateCompany = (values: UpdateCompanyRequestParams) => {
-    HrApi.put("Companies/" + companyId, values)
+    axiosPrivate.put("Companies/" + companyId, values)
       .then((res) => {
         // console.log("Company updated successfully.");
         setSuccess("Company updated successfully.");

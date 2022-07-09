@@ -19,7 +19,6 @@ import {
 } from "@chakra-ui/react";
 import { config } from "dotenv";
 import React, { useEffect, useState } from "react";
-import HrApi from "../../../Api/HrApi";
 import DeleteIconButton from "../../../components/Buttons/DeleteIconButton";
 import useAuth from "../../../hooks/useAuth";
 import CompanyResponseDto from "../../../Models/Hr/Company/CompanyResponseDto";
@@ -33,10 +32,13 @@ import BackButton from "../../../components/Buttons/BackButton";
 import SearchCompaniesRequestParams from "../../../Models/Hr/Company/SearchCompaniesRequestParams";
 import Common from "../../../utility/Common";
 import PagedResponse from "../../../Models/PagedResponse";
+import useAxiosAuth from "../../../hooks/useAxiosAuth";
 
 const AdminListCompanies = () => {
   const { auth }: AuthModel = useAuth();
   const [pagedRes, setPagedRes] = useState<PagedResponse<CompanyResponseDto>>();
+
+  const axiosPrivate = useAxiosAuth();
 
   useEffect(() => {
     searchCompanies(
@@ -51,7 +53,7 @@ const AdminListCompanies = () => {
   }, []);
 
   const searchCompanies = (searchParams: SearchCompaniesRequestParams) => {
-    HrApi.get("Companies/search", {
+    axiosPrivate.get("Companies/search", {
       params: searchParams,
     })
       .then((res) => {
