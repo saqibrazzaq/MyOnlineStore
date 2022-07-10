@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Models.Request;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace hr.Dtos.Company
 {
-    public class ManipulateCompanyDto
+    public class ManipulateCompanyDto : AccountDto
     {
         [Required, MaxLength(500)]
         public string? Name { get; set; }

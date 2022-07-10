@@ -2,7 +2,7 @@
 using auth.Entities;
 using AutoMapper;
 
-namespace MyOnlineStore
+namespace auth
 {
     public class MappingProfile : Profile
     {

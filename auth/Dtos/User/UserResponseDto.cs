@@ -12,5 +12,6 @@ namespace auth.Dtos.User
         public string? Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public string? ProfilePictureUrl { get; set; }
+        public Guid? AccountId { get; set; }
     }
 }

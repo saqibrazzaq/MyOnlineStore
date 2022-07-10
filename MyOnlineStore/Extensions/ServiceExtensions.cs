@@ -52,7 +52,7 @@ namespace MyOnlineStore.Extensions
 
         public static void ConfigureAutoMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(auth.MappingProfile));
             services.AddAutoMapper(typeof(cities.MappingProfile));
             services.AddAutoMapper(typeof(hr.MappingProfile));
         }

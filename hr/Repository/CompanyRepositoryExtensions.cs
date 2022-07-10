@@ -10,7 +10,7 @@ namespace hr.Repository
         public static IQueryable<Company> Search(this IQueryable<Company> items,
             SearchCompaniesRequestDto searchParams)
         {
-            var itemsToReturn = items;
+            var itemsToReturn = items.Where(x => x.AccountId == searchParams.AccountId);
 
             if (string.IsNullOrWhiteSpace(searchParams.SearchText) == false)
             {

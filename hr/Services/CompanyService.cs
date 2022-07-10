@@ -31,17 +31,17 @@ namespace hr.Services
             return _mapper.Map<CompanyDetailResponseDto>(companyEntity);
         }
 
-        public void Delete(Guid companyId)
+        public void Delete(Guid companyId, DeleteCompanyRequestDto dto)
         {
-            var companyEntity = findByCompanyIdIfExists(companyId, true);
+            var companyEntity = findByCompanyIdIfExists(companyId, dto.AccountId, true);
             _repositoryManager.CompanyRepository.Delete(companyEntity);
             _repositoryManager.Save();
         }
 
-        private Entities.Company findByCompanyIdIfExists(Guid companyId, bool trackChanges)
+        private Entities.Company findByCompanyIdIfExists(Guid companyId, Guid? accountId, bool trackChanges)
         {
             var companyEntity = _repositoryManager.CompanyRepository.FindByCondition(
-                x => x.CompanyId == companyId,
+                x => x.CompanyId == companyId && x.AccountId == accountId,
                 trackChanges)
                 .FirstOrDefault();
             if (companyEntity == null)
@@ -50,16 +50,19 @@ namespace hr.Services
             return companyEntity;
         }
 
-        public CompanyDetailResponseDto FindByCompanyId(Guid companyId)
+        public CompanyDetailResponseDto FindByCompanyId(Guid companyId, FindByCompanyIdRequestDto dto)
         {
-            var companyEntity = findByCompanyIdIfExists(companyId, false);
+            var companyEntity = findByCompanyIdIfExists(companyId, dto.AccountId, false);
             var companyDto = _mapper.Map<CompanyDetailResponseDto>(companyEntity);
             return companyDto;
         }
 
-        public IEnumerable<CompanyResponseDto> FindAll()
+        public IEnumerable<CompanyResponseDto> FindAll(FindAllCompaniesRequestDto? dto)
         {
-            var companyEntities = _repositoryManager.CompanyRepository.FindAll(
+            if (dto == null) throw new BadRequestException("User not logged in");
+
+            var companyEntities = _repositoryManager.CompanyRepository.FindByCondition(
+                x => x.AccountId == dto.AccountId,
                 trackChanges: false);
             var companyDtos = _mapper.Map<IEnumerable<CompanyResponseDto>>(companyEntities);
             return companyDtos;
@@ -67,7 +70,7 @@ namespace hr.Services
 
         public void Update(Guid companyId, UpdateCompanyRequestDto dto)
         {
-            var companyEntity = findByCompanyIdIfExists(companyId, true);
+            var companyEntity = findByCompanyIdIfExists(companyId, dto.AccountId, true);
             _mapper.Map(dto, companyEntity);
             _repositoryManager.Save();
         }
@@ -75,7 +78,8 @@ namespace hr.Services
         public ApiOkPagedResponse<IEnumerable<CompanyResponseDto>, MetaData>
             Search(SearchCompaniesRequestDto dto)
         {
-            var companyPagedEntities = _repositoryManager.CompanyRepository.SearchCompanies(dto, false);
+            var companyPagedEntities = _repositoryManager.CompanyRepository.
+                SearchCompanies(dto, false);
             var companyDtos = _mapper.Map<IEnumerable<CompanyResponseDto>>(companyPagedEntities);
             return new ApiOkPagedResponse<IEnumerable<CompanyResponseDto>, MetaData>(companyDtos,
                 companyPagedEntities.MetaData);

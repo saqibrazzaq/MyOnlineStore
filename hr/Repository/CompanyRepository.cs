@@ -2,11 +2,6 @@
 using hr.Data;
 using hr.Dtos.Company;
 using hr.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace hr.Repository
 {
@@ -16,7 +11,8 @@ namespace hr.Repository
         {
         }
 
-        public PagedList<Company> SearchCompanies(SearchCompaniesRequestDto dto, bool trackChanges)
+        public PagedList<Company> SearchCompanies(SearchCompaniesRequestDto dto, 
+            bool trackChanges)
         {
             var companyEntities = FindAll(trackChanges)
                 .Search(dto)

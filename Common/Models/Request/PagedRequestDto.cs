@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common.Models.Request
 {
-    public class PagedRequestDto
+    public class PagedRequestDto : AccountDto
     {
         const int maxPageSize = 50;
         public int PageNumber { get; set; } = 1;
