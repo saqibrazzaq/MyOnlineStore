@@ -9,9 +9,13 @@ services:
     depends_on:
       - authdb
       - citiesdb
+      - hrdb
 
   authdb:
     image: mcr.microsoft.com/mssql/server:2017-latest
 
   citiesdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
+  hrdb:
     image: mcr.microsoft.com/mssql/server:2017-latest

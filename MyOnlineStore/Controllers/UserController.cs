@@ -32,6 +32,7 @@ namespace MyOnlineStore.Controllers
         }
 
         [HttpPost("logout")]
+        [Authorize(Roles = Constants.AllRoles)]
         public IActionResult Logout()
         {
             setRefreshTokenCookie("");
@@ -74,7 +75,9 @@ namespace MyOnlineStore.Controllers
         public async Task<IActionResult> DeleteUser(
             string username)
         {
-            await _userService.Delete(new DeleteUserRequestDto(username));
+            var userDto = await _userService.GetLoggedInUser();
+            await _userService.Delete(new DeleteUserRequestDto(
+                username, userDto.AccountId));
             return Ok();
         }
 
@@ -125,9 +128,10 @@ namespace MyOnlineStore.Controllers
         [HttpGet("search-users")]
         [Authorize(Roles = Constants.AllAdminRoles)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public IActionResult SearchUsers(
+        public async Task<IActionResult> SearchUsers(
             [FromQuery] SearchUsersRequestDto dto)
         {
+            dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
             var res = _userService.SearchUsers(
                 dto, trackChanges: false);
             return Ok(res);
@@ -155,6 +159,7 @@ namespace MyOnlineStore.Controllers
         public async Task<IActionResult> GetUser(
             [FromQuery] FindByUsernameRequestDto dto)
         {
+            dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
             var res = await _userService.FindByUsername(dto);
             return Ok(res);
         }

@@ -85,7 +85,10 @@ namespace auth.Services
         {
             var userEntity = await _userManager.FindByNameAsync(dto.Username);
             if (userEntity == null)
-                throw new BadRequestException("User does not exist");
+                throw new NotFoundException("User does not exist");
+
+            if (userEntity.AccountId != dto.AccountId)
+                throw new NotFoundException("User does not exist in this account");
 
             var roles = await _userManager.GetRolesAsync(userEntity);
             if (roles.Contains(Constants.OwnerRole))
@@ -128,6 +131,9 @@ namespace auth.Services
             var userEntity = await _userManager.FindByNameAsync(dto.Username);
             if (userEntity == null)
                 throw new NotFoundException(UserName + " Not found.");
+
+            if (userEntity.AccountId != dto.AccountId)
+                throw new NotFoundException(UserName + " Not found in this account.");
 
             var userDto = _mapper.Map<UserResponseDto>(userEntity);
             return userDto;

@@ -31,6 +31,17 @@ services:
     ports:
       - "1434:1433"
 
+  hrdb:
+    volumes:
+      - hrdb_data:/var/opt/mssql/data
+    container_name: hrdb
+    environment:
+      SA_PASSWORD: "Saqib123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433"
+
 volumes:
   authdb_data:
   citiesdb_data:
+  hrdb_data:

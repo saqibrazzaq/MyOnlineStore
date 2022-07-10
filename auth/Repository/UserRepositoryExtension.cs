@@ -7,24 +7,20 @@ namespace auth.Repository
 {
     public static class UserRepositoryExtension
     {
-        public static IQueryable<AppIdentityUser> Search(this IQueryable<AppIdentityUser> users,
-            SearchUsersRequestDto dto)
+        public static IQueryable<AppIdentityUser> Search(this IQueryable<AppIdentityUser> items,
+            SearchUsersRequestDto searchParams)
         {
-            // Empty search term
-            if (string.IsNullOrWhiteSpace(dto.SearchText))
-                return users;
+            var itemsToReturn = items.Where(x => x.AccountId == searchParams.AccountId);
 
-            // Convert to lower case
-            var searchTerm = dto.SearchText.Trim().ToLower();
-
-            // Search in different properties
-            var usersToReturn = users.Where(
-                // Name
-                x => (x.UserName ?? "").ToLower().Contains(searchTerm) ||
-                (x.Email ?? "").ToLower().Contains(searchTerm)
+            if (string.IsNullOrWhiteSpace(searchParams.SearchText) == false)
+            {
+                itemsToReturn = itemsToReturn.Where(
+                    x => (x.UserName ?? "").ToLower().Contains(searchParams.SearchText) ||
+                        x.Email.Contains(searchParams.SearchText)
                 );
+            }
 
-            return usersToReturn;
+            return itemsToReturn;
         }
 
         public static IQueryable<AppIdentityUser> Sort(this IQueryable<AppIdentityUser> users,
