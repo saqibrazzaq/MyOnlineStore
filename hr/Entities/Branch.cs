@@ -22,6 +22,7 @@ namespace hr.Entities
 
 
         // Foreign keys
+        [Required]
         public Guid? CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         public Company? Company { get; set; }

@@ -47,11 +47,12 @@ const AdminListBranches = () => {
   }, []);
 
   const searchBranches = (searchParams: SearchBranchesRequestParams) => {
-    axiosPrivate.get("Branches/search", {
-      params: searchParams,
-    })
+    axiosPrivate
+      .get("Branches/search", {
+        params: searchParams,
+      })
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setPagedRes(res.data);
       })
       .catch((err) => {
@@ -125,28 +126,28 @@ const AdminListBranches = () => {
           )}
         </Tbody>
         <Tfoot>
-        <Tr>
-        <Th colSpan={2} textAlign="center">
-        <Button
-                    isDisabled={!pagedRes?.metaData?.hasPrevious}
-                    variant="link"
-                    mr={5}
-                    onClick={previousPage}
-                  >
-                    Previous
-                  </Button>
-                  Page {pagedRes?.metaData?.currentPage} of{" "}
-                  {pagedRes?.metaData?.totalPages}
-                  <Button
-                    isDisabled={!pagedRes?.metaData?.hasNext}
-                    variant="link"
-                    ml={5}
-                    onClick={nextPage}
-                  >
-                    Next
-                  </Button>
-        </Th>
-        </Tr>
+          <Tr>
+            <Th colSpan={2} textAlign="center">
+              <Button
+                isDisabled={!pagedRes?.metaData?.hasPrevious}
+                variant="link"
+                mr={5}
+                onClick={previousPage}
+              >
+                Previous
+              </Button>
+              Page {pagedRes?.metaData?.currentPage} of{" "}
+              {pagedRes?.metaData?.totalPages}
+              <Button
+                isDisabled={!pagedRes?.metaData?.hasNext}
+                variant="link"
+                ml={5}
+                onClick={nextPage}
+              >
+                Next
+              </Button>
+            </Th>
+          </Tr>
         </Tfoot>
       </Table>
     </TableContainer>
@@ -176,7 +177,7 @@ const AdminListBranches = () => {
         {displayBranches()}
       </Stack>
     </Box>
-  )
-}
+  );
+};
 
-export default AdminListBranches
+export default AdminListBranches;

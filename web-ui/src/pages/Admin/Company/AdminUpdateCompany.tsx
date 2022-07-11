@@ -19,11 +19,9 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
-import useAuth from "../../../hooks/useAuth";
 import { Link as RouteLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Field, Formik } from "formik";
-import AuthModel from "../../../Models/User/AuthModel";
 import SubmitButton from "../../../components/Buttons/SubmitButton";
 import UpdateCompanyRequestParams from "../../../Models/Hr/Company/UpdateCompanyRequestParams";
 import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompanyIdRequestParams";
@@ -39,7 +37,6 @@ const AdminUpdateCompany = () => {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const { auth }: AuthModel = useAuth();
   const axiosPrivate = useAxiosAuth();
   const navigate = useNavigate();
   let params = useParams();
