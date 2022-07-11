@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Common.Models.Exceptions;
 using Common.Models.Request;
 using Common.Models.Response;
 using hr.Dtos.Branch;
 using hr.Entities;
 using hr.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,27 +34,59 @@ namespace hr.Services
 
         public void Delete(Guid branchId, DeleteBranchRequestDto dto)
         {
-            throw new NotImplementedException();
+            var branchEntity = findByBranchIdIfExists(branchId, dto.AccountId, true);
+            _repositoryManager.BranchRepository.Delete(branchEntity);
+            _repositoryManager.Save();
+        }
+
+        private Branch findByBranchIdIfExists(Guid branchId, Guid? accountId, bool trackChanges)
+        {
+            var branchEntity = _repositoryManager.BranchRepository.FindByCondition(
+                x => x.CompanyId == branchId && x.Company.AccountId == accountId,
+                trackChanges,
+                include: i => i.Include(x => x.Company)
+                )
+                .FirstOrDefault();
+            if (branchEntity == null)
+                throw new NotFoundException("No branch found with id " + branchId);
+
+            return branchEntity;
         }
 
         public IEnumerable<BranchResponseDto> FindAll(FindAllBranchesRequestDto dto)
         {
-            throw new NotImplementedException();
+            if (dto == null) throw new BadRequestException("User not logged in");
+
+            var branchEntities = _repositoryManager.BranchRepository.FindByCondition(
+                x => x.Company.AccountId == dto.AccountId,
+                trackChanges: false,
+                include: i => i.Include(x => x.Company));
+            var branchDtos = _mapper.Map<IEnumerable<BranchResponseDto>>(branchEntities);
+            return branchDtos;
         }
 
         public BranchDetailResponseDto FindByBranchId(Guid branchId, FindByBranchIdRequestDto dto)
         {
-            throw new NotImplementedException();
+            var branchEntity = findByBranchIdIfExists(branchId, dto.AccountId, false);
+            var branchDto = _mapper.Map<BranchDetailResponseDto>(branchEntity);
+            return branchDto;
         }
 
-        public ApiOkPagedResponse<IEnumerable<BranchResponseDto>, MetaData> Search(SearchBranchesRequestDto dto)
+        public ApiOkPagedResponse<IEnumerable<BranchResponseDto>, MetaData> 
+            Search(SearchBranchesRequestDto dto)
         {
-            throw new NotImplementedException();
+            var branchPagedEntities = _repositoryManager.BranchRepository.
+                SearchBranches(dto, false);
+            var branchDtos = _mapper.Map<IEnumerable<BranchResponseDto>>(branchPagedEntities);
+            return new ApiOkPagedResponse<IEnumerable<BranchResponseDto>, MetaData>(branchDtos,
+                branchPagedEntities.MetaData);
         }
 
         public void Update(Guid branchId, UpdateBranchRequestDto dto)
         {
-            throw new NotImplementedException();
+            var branchEntity = findByBranchIdIfExists(branchId, dto.AccountId, true);
+            _mapper.Map(dto, branchEntity);
+            _repositoryManager.Save();
         }
     }
 }

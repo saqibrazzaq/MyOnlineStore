@@ -1,4 +1,6 @@
-﻿using hr.Entities;
+﻿using Common.Models.Request;
+using hr.Dtos.Branch;
+using hr.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,7 @@ namespace hr.Repository
 {
     public interface IBranchRepository : IHrRepositoryBase<Branch>
     {
+        PagedList<Branch> SearchBranches(SearchBranchesRequestDto dto,
+            bool trackChanges);
     }
 }

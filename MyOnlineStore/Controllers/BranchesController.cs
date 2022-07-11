@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyOnlineStore.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class BranchesController : ControllerBase
     {
