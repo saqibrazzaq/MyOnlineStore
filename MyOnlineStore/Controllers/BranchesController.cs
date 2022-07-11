@@ -1,9 +1,7 @@
-﻿using auth.Dtos.User;
-using auth.Services;
+﻿using auth.Services;
 using Common.ActionFilters;
-using Common.Models.Request;
 using Common.Utility;
-using hr.Dtos.Company;
+using hr.Dtos.Branch;
 using hr.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,75 +9,74 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyOnlineStore.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CompaniesController : ControllerBase
+    public class BranchesController : ControllerBase
     {
-        private readonly ICompanyService _companyService;
+        private readonly IBranchService _branchService;
         private readonly IUserService _userService;
-        
-        public CompaniesController(ICompanyService companyService, 
+        public BranchesController(IBranchService branchService,
             IUserService userService)
         {
-            _companyService = companyService;
+            _branchService = branchService;
             _userService = userService;
         }
 
         [HttpGet]
         [Authorize(Roles = Constants.AllRoles)]
-        public async Task<IActionResult> FindAll(FindAllCompaniesRequestDto dto)
+        public async Task<IActionResult> FindAll(FindAllBranchesRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
-            var res = _companyService.FindAll(dto);
+            var res = _branchService.FindAll(dto);
             return Ok(res);
         }
 
         [HttpGet("search")]
         [Authorize(Roles = Constants.AllRoles)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> Search([FromQuery] SearchCompaniesRequestDto dto)
+        public async Task<IActionResult> Search([FromQuery] SearchBranchesRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
-            var res = _companyService.Search(dto);
+            var res = _branchService.Search(dto);
             return Ok(res);
         }
 
-        [HttpGet("{companyId}", Name = "FindByCompanyId")]
+        [HttpGet("{branchId}", Name = "FindByBranchId")]
         [Authorize(Roles = Constants.AllRoles)]
-        public async Task<IActionResult> FindByCompanyId(Guid companyId, [FromQuery]FindByCompanyIdRequestDto dto)
+        public async Task<IActionResult> FindByBranchId(Guid branchId, FindByBranchIdRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
-            var res = _companyService.FindByCompanyId(companyId, dto);
+            var res = _branchService.FindByBranchId(branchId, dto);
             return Ok(res);
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof (ValidationFilterAttribute))]
         [Authorize(Roles = Constants.AllAdminRoles)]
-        public async Task<IActionResult> Create([FromBody] CreateCompanyRequestDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateBranchRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
-            var res = _companyService.Create(dto);
-            return CreatedAtAction(nameof(FindByCompanyId), new { res.CompanyId }, res);
+            var res = _branchService.Create(dto);
+            return CreatedAtAction(nameof(FindByBranchId), new { res.BranchId }, res);
         }
 
-        [HttpPut("{companyId}")]
+        [HttpPut("{branchId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [Authorize(Roles = Constants.AllAdminRoles)]
-        public async Task<IActionResult> Update(Guid companyId, [FromBody] UpdateCompanyRequestDto dto)
+        public async Task<IActionResult> Update(Guid branchId, [FromBody] UpdateBranchRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
-            _companyService.Update(companyId, dto);
+            _branchService.Update(branchId, dto);
             return NoContent();
         }
 
-        [HttpDelete("{companyId}")]
+        [HttpDelete("{branchId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [Authorize(Roles = Constants.AllAdminRoles)]
-        public async Task<IActionResult> Delete(Guid companyId, DeleteCompanyRequestDto dto)
+        public async Task<IActionResult> Delete(Guid branchId, DeleteBranchRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
-            _companyService.Delete(companyId, dto);
+            _branchService.Delete(branchId, dto);
             return NoContent();
         }
     }

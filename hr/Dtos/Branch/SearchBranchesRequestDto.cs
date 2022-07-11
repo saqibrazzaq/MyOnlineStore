@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hr.Dtos.Company
+namespace hr.Dtos.Branch
 {
-    public class FindByCompanyIdRequestDto : AccountDto
+    public class SearchBranchesRequestDto : PagedRequestDto
     {
+        public Guid? CompanyId { get; set; }
     }
 }

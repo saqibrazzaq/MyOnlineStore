@@ -9,9 +9,6 @@ namespace hr.Dtos.Company
 {
     public class FindAllCompaniesRequestDto : AccountDto
     {
-        public FindAllCompaniesRequestDto(Guid? accountId)
-        {
-            AccountId = accountId;
-        }
+        
     }
 }

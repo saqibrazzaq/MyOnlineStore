@@ -9,9 +9,5 @@ namespace hr.Dtos.Company
 {
     public class DeleteCompanyRequestDto : AccountDto
     {
-        public DeleteCompanyRequestDto(Guid? accountId)
-        {
-            AccountId = accountId;
-        }
     }
 }

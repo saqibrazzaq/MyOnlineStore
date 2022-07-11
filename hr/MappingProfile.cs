@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using hr.Dtos.Branch;
 using hr.Dtos.Company;
 using hr.Entities;
 using System;
@@ -18,6 +19,12 @@ namespace hr
             CreateMap<UpdateCompanyRequestDto, Company>();
             CreateMap<Company, CompanyResponseDto>();
             CreateMap<Company, CompanyDetailResponseDto>();
+
+            // Branch
+            CreateMap<Branch, BranchResponseDto>();
+            CreateMap<Branch, BranchDetailResponseDto>();
+            CreateMap<CreateBranchRequestDto, Branch>();
+            CreateMap<UpdateBranchRequestDto, Branch>();
         }
     }
 }

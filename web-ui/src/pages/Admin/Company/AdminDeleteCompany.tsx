@@ -37,7 +37,6 @@ import DeleteButton from "../../../components/Buttons/DeleteButton";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
 import CompanyDetailResponseDto from "../../../Models/Hr/Company/CompanyDetailResponseDto";
-import HrApi from "../../../Api/HrApi";
 import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompanyIdRequestParams";
 import AuthModel from "../../../Models/User/AuthModel";
 import useAuth from "../../../hooks/useAuth";
@@ -56,6 +55,7 @@ const AdminDeleteCompany = () => {
   const toast = useToast();
   const navigate = useNavigate();
   let params = useParams();
+  const axiosPrivate = useAxiosAuth();
   const { auth }: AuthModel = useAuth();
   const companyId = params.companyId;
   const deleteText = "Delete Company";
@@ -63,7 +63,7 @@ const AdminDeleteCompany = () => {
 
   const deleteCompany = () => {
     onClose();
-    HrApi.delete("Companies/" + companyId, {
+    axiosPrivate.delete("Companies/" + companyId, {
       params: apiUrlParams,
     })
       .then((res) => {
@@ -162,7 +162,7 @@ const AdminDeleteCompany = () => {
   }, [company?.cityId]);
 
   const loadCompany = () => {
-    HrApi.get("Companies/" + companyId, {
+    axiosPrivate.get("Companies/" + companyId, {
       params: apiUrlParams,
     })
       .then((res) => {
