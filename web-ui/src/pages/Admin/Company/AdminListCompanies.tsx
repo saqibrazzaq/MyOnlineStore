@@ -46,8 +46,7 @@ const AdminListCompanies = () => {
         "",
         1,
         Common.DEFAULT_PAGE_SIZE,
-        "",
-        auth.accountId
+        ""
       )
     );
   }, []);
@@ -72,8 +71,7 @@ const AdminListCompanies = () => {
         "",
         previousPageNumber,
         Common.DEFAULT_PAGE_SIZE,
-        "",
-        auth.accountId
+        ""
       );
 
       searchCompanies(searchParams);
@@ -87,8 +85,7 @@ const AdminListCompanies = () => {
         "",
         nextPageNumber,
         Common.DEFAULT_PAGE_SIZE,
-        "",
-        auth.accountId
+        ""
       );
 
       searchCompanies(searchParams);

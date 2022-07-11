@@ -5,13 +5,13 @@ import StateDropdown from "./StateDropdown";
 import CityDropdown from "./CityDropdown";
 import StateResponseDto from "../../Models/Cities/State/StateResponseDto";
 import CountryResponseDto from "../../Models/Cities/Country/CountryResponseDto";
-import citiesApi from "../../Api/citiesApi";
 import CountrySearchRequestParams from "../../Models/Cities/Country/CountrySearchRequestParams";
 import StateSearchRequestParams from "../../Models/Cities/State/StateSearchRequestParams";
 import CitySearchRequestParams from "../../Models/Cities/City/CitySearchRequestParams";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 
 const CityStateCountryDropdown = ({ cityId, handleChange }) => {
-  
+  const axiosPrivate = useAxiosAuth();
   const [country, setCountry] = useState();
   const [state, setState] = useState();
   const [city, setCity] = useState();
@@ -58,7 +58,7 @@ const CityStateCountryDropdown = ({ cityId, handleChange }) => {
 
   const initializeCityStateCountry = () => {
     if (cityId) {
-      citiesApi
+      axiosPrivate
         .get("Cities/" + cityId)
         .then((res) => {
           const cityDetailResponse = res.data;
@@ -78,7 +78,7 @@ const CityStateCountryDropdown = ({ cityId, handleChange }) => {
       cityDetailResponse.countryId,
       ""
     );
-    citiesApi
+    axiosPrivate
       .get("Countries/search", {
         params: countrySearchParams,
       })
@@ -99,7 +99,7 @@ const CityStateCountryDropdown = ({ cityId, handleChange }) => {
       cityDetailResponse.stateId,
       ""
     );
-    citiesApi
+    axiosPrivate
       .get("States/search", {
         params: stateSearchParams,
       })
@@ -115,7 +115,7 @@ const CityStateCountryDropdown = ({ cityId, handleChange }) => {
   const initializeCity = (cityDetailResponse) => {
     const citySearchParams = new CitySearchRequestParams(cityDetailResponse.stateId,
       cityDetailResponse.cityId, "");
-      citiesApi.get("Cities/search", {
+      axiosPrivate.get("Cities/search", {
         params: citySearchParams
       }).then(res => {
         const cityResponse = res.data.pagedList[0];

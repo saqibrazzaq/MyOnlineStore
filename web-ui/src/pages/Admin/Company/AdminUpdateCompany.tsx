@@ -27,17 +27,10 @@ import AuthModel from "../../../Models/User/AuthModel";
 import SubmitButton from "../../../components/Buttons/SubmitButton";
 import UpdateCompanyRequestParams from "../../../Models/Hr/Company/UpdateCompanyRequestParams";
 import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompanyIdRequestParams";
-import RegularButton from "../../../components/Buttons/RegularButton";
 import BackButton from "../../../components/Buttons/BackButton";
-import CountryDropdown from "../../../components/Dropdowns/CountryDropdown";
-import CountryResponseDto from "../../../Models/Cities/Country/CountryResponseDto";
-import StateDropdown from "../../../components/Dropdowns/StateDropdown";
-import StateResponseDto from "../../../Models/Cities/State/StateResponseDto";
-import CityDropdown from "../../../components/Dropdowns/CityDropdown";
 import CityResponseDto from "../../../Models/Cities/City/CityResponseDto";
 import CityStateCountryDropdown from "../../../components/Dropdowns/CityStateCountryDropdown";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
-import citiesApi from "../../../Api/citiesApi";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
 
 const AdminUpdateCompany = () => {
@@ -52,10 +45,10 @@ const AdminUpdateCompany = () => {
   let params = useParams();
   const companyId = params.companyId;
   const updateText = companyId ? "Update Company" : "Create Company";
-  const findCompanyReq = new FindByCompanyIdRequestParams(auth.accountId);
+  const findCompanyReq = new FindByCompanyIdRequestParams();
 
   const [companyData, setCompanyData] = useState(
-    new UpdateCompanyRequestParams(auth.accountId, "", "", "", "")
+    new UpdateCompanyRequestParams("", "", "", "")
   );
 
   useEffect(() => {
@@ -144,7 +137,7 @@ const AdminUpdateCompany = () => {
 
   const loadCityDetails = () => {
     if (cityId) {
-      citiesApi.get("Cities/" + cityId).then(res => {
+      axiosPrivate.get("Cities/" + cityId).then(res => {
         setSelectedCity(res.data);
       }).catch(err => {
         console.log(err);

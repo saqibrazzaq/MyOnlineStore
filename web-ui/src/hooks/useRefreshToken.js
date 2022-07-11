@@ -6,16 +6,16 @@ const useRefreshToken = () => {
   const { auth, setAuth } = useAuth();
 
   const refresh = async () => {
-    console.log("in useRefresh()");
-    console.log(auth);
+    // console.log("in useRefresh()");
+    // console.log(auth);
     const response = await Api.post("User/refresh-token", {
       accessToken: auth.accessToken,
     });
-    console.log("got response from useRefresh() " + response);
+    // console.log("got response from useRefresh() " + response);
     setAuth((prev) => {
-      console.log(JSON.stringify(prev));
-      console.log(response.data.accessToken);
-      console.log("Refresh token.");
+      // console.log(JSON.stringify(prev));
+      // console.log(response.data.accessToken);
+      // console.log("Refresh token.");
       return {
         ...prev,
         accessToken: response.data.accessToken,

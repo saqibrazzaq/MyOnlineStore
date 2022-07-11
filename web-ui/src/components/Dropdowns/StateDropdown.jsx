@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import citiesApi from "../../Api/citiesApi";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import StateSearchRequestParams from "../../Models/Cities/State/StateSearchRequestParams";
 
 const StateDropdown = ({
@@ -9,6 +9,7 @@ const StateDropdown = ({
   isDisabled,
   selectedState,
 }) => {
+  const axiosPrivate = useAxiosAuth();
   const [inputValue, setInputValue] = useState("");
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,7 @@ const StateDropdown = ({
     );
     if (countryId) {
       setIsLoading(true);
-      citiesApi
+      axiosPrivate
         .get("States/search", {
           params: searchParams,
         })

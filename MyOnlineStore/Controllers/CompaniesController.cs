@@ -27,7 +27,7 @@ namespace MyOnlineStore.Controllers
 
         [HttpGet]
         [Authorize(Roles = Constants.AllRoles)]
-        public async Task<IActionResult> FindAll(FindAllCompaniesRequestDto dto)
+        public async Task<IActionResult> FindAll([FromQuery] FindAllCompaniesRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
             var res = _companyService.FindAll(dto);
@@ -76,7 +76,7 @@ namespace MyOnlineStore.Controllers
         [HttpDelete("{companyId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [Authorize(Roles = Constants.AllAdminRoles)]
-        public async Task<IActionResult> Delete(Guid companyId, DeleteCompanyRequestDto dto)
+        public async Task<IActionResult> Delete(Guid companyId, [FromQuery] DeleteCompanyRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
             _companyService.Delete(companyId, dto);

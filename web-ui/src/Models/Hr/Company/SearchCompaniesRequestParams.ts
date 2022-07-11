@@ -7,10 +7,9 @@ export default class SearchCompaniesRequestParams extends PagedRequestParameters
     searchText?: string,
     pageNumber?: number,
     pageSize?: number,
-    orderBy?: string,
-    accountId?: string
+    orderBy?: string
   ) {
-    super(pageNumber, pageSize, orderBy, accountId);
+    super(pageNumber, pageSize, orderBy);
     this.searchText = searchText;
   }
 }

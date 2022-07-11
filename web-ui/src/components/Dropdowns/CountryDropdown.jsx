@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import citiesApi from "../../Api/citiesApi";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 
 const CountryDropdown = ({handleChange, selectedCountry}) => {
+  const axiosPrivate = useAxiosAuth();
   const [inputValue, setInputValue] = useState("");
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const loadCountries = () => {
     setIsLoading(true);
-    citiesApi
+    axiosPrivate
       .get("Countries/search", {
         params: {
           searchText: inputValue,

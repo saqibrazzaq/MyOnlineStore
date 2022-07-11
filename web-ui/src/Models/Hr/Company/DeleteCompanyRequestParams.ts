@@ -1,10 +1,7 @@
-import AccountIdParameters from "../HrRequestParameters";
-
-export default class DeleteCompanyRequestParams extends AccountIdParameters {
+export default class DeleteCompanyRequestParams  {
   companyId: string;
-  constructor(companyId:string, accountId?: string) {
-    super(accountId);
-
+  constructor(companyId:string) {
+    
     this.companyId = companyId;
   }
 }

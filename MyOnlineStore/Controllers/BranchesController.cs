@@ -24,7 +24,7 @@ namespace MyOnlineStore.Controllers
 
         [HttpGet]
         [Authorize(Roles = Constants.AllRoles)]
-        public async Task<IActionResult> FindAll(FindAllBranchesRequestDto dto)
+        public async Task<IActionResult> FindAll([FromQuery] FindAllBranchesRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
             var res = _branchService.FindAll(dto);
@@ -43,7 +43,7 @@ namespace MyOnlineStore.Controllers
 
         [HttpGet("{branchId}", Name = "FindByBranchId")]
         [Authorize(Roles = Constants.AllRoles)]
-        public async Task<IActionResult> FindByBranchId(Guid branchId, FindByBranchIdRequestDto dto)
+        public async Task<IActionResult> FindByBranchId(Guid branchId, [FromQuery] FindByBranchIdRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
             var res = _branchService.FindByBranchId(branchId, dto);
@@ -73,7 +73,7 @@ namespace MyOnlineStore.Controllers
         [HttpDelete("{branchId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [Authorize(Roles = Constants.AllAdminRoles)]
-        public async Task<IActionResult> Delete(Guid branchId, DeleteBranchRequestDto dto)
+        public async Task<IActionResult> Delete(Guid branchId, [FromQuery] DeleteBranchRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
             _branchService.Delete(branchId, dto);

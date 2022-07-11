@@ -1,6 +1,5 @@
-import AccountIdParameters from "../Hr/HrRequestParameters";
 
-export default class PagedRequestParameters extends AccountIdParameters {
+export default class PagedRequestParameters  {
   pageNumber?: number;
   pageSize?: number;
   orderBy?: string;
@@ -8,10 +7,8 @@ export default class PagedRequestParameters extends AccountIdParameters {
   constructor(
     pageNumber?: number,
     pageSize?: number,
-    orderBy?: string,
-    accountId?: string
+    orderBy?: string
   ) {
-    super(accountId);
 
     this.pageNumber = pageNumber;
     this.pageSize = pageSize;

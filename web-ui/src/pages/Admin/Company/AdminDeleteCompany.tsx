@@ -42,7 +42,6 @@ import AuthModel from "../../../Models/User/AuthModel";
 import useAuth from "../../../hooks/useAuth";
 import DeleteCompanyRequestParams from "../../../Models/Hr/Company/DeleteCompanyRequestParams";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
-import citiesApi from "../../../Api/citiesApi";
 
 const AdminDeleteCompany = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,7 +58,7 @@ const AdminDeleteCompany = () => {
   const { auth }: AuthModel = useAuth();
   const companyId = params.companyId;
   const deleteText = "Delete Company";
-  const apiUrlParams = new FindByCompanyIdRequestParams(auth.accountId);
+  const apiUrlParams = new FindByCompanyIdRequestParams();
 
   const deleteCompany = () => {
     onClose();
@@ -178,7 +177,7 @@ const AdminDeleteCompany = () => {
   const loadCityDetails = () => {
     
     if (company?.cityId) {
-      citiesApi.get("Cities/" + company?.cityId).then(res => {
+      axiosPrivate.get("Cities/" + company?.cityId).then(res => {
         setCity(res.data);
       }).catch(err => {
         console.log(err);
