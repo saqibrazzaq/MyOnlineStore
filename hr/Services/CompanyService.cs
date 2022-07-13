@@ -16,11 +16,14 @@ namespace hr.Services
     {
         private readonly IHrRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IBranchService _branchService;
         public CompanyService(IHrRepositoryManager repositoryManager,
-            IMapper mapper)
+            IMapper mapper, 
+            IBranchService branchService)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _branchService = branchService;
         }
 
         public CompanyDetailResponseDto Create(CreateCompanyRequestDto dto)
@@ -54,6 +57,7 @@ namespace hr.Services
         {
             var companyEntity = findByCompanyIdIfExists(companyId, dto.AccountId, false);
             var companyDto = _mapper.Map<CompanyDetailResponseDto>(companyEntity);
+            companyDto.BranchCount = _branchService.CountByCompanyId(companyId);
             return companyDto;
         }
 

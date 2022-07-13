@@ -18,5 +18,6 @@ namespace hr.Services
         void Delete(Guid branchId, DeleteBranchRequestDto dto);
         ApiOkPagedResponse<IEnumerable<BranchResponseDto>, MetaData>
             Search(SearchBranchesRequestDto dto);
+        int CountByCompanyId(Guid companyId);
     }
 }

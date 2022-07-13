@@ -14,5 +14,6 @@ namespace hr.Dtos.Company
         public string? Address2 { get; set; }
         public Guid? CityId { get; set; }
         public Guid? AccountId { get; set; }
+        public int BranchCount { get; set; } = 0;
     }
 }

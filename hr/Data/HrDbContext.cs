@@ -22,6 +22,14 @@ namespace hr.Data
         public DbSet<Employee>? Employees { get; set; }
         public DbSet<Gender>? Genders { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Branch>()
+                .HasOne(x => x.Company)
+                .WithMany(x => x.Branches)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

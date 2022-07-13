@@ -5,4 +5,5 @@ export default interface CompanyDetailResponseDto {
   address2?: string;
   cityId?: string;
   accountId?: string;
+  branchCount: number
 }

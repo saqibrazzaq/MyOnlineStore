@@ -88,5 +88,14 @@ namespace hr.Services
             _mapper.Map(dto, branchEntity);
             _repositoryManager.Save();
         }
+
+        public int CountByCompanyId(Guid companyId)
+        {
+            var count = _repositoryManager.BranchRepository.FindByCondition(
+                x => x.CompanyId == companyId,
+                trackChanges: false)
+                .Count();
+            return count;
+        }
     }
 }
