@@ -36,18 +36,17 @@ import CancelButton from "../../../components/Buttons/CancelButton";
 import DeleteButton from "../../../components/Buttons/DeleteButton";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
-import CompanyDetailResponseDto from "../../../Models/Hr/Company/CompanyDetailResponseDto";
-import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompanyIdRequestParams";
 import AuthModel from "../../../Models/User/AuthModel";
 import useAuth from "../../../hooks/useAuth";
 import DeleteCompanyRequestParams from "../../../Models/Hr/Company/DeleteCompanyRequestParams";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
+import BranchDetailResponseDto from "../../../Models/Hr/Branch/BranchDetailResponse";
 
-const AdminDeleteCompany = () => {
+const AdminDeleteBranch = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef<HTMLAnchorElement>(null);
 
-  const [company, setCompany] = useState<CompanyDetailResponseDto>();
+  const [branch, setBranch] = useState<BranchDetailResponseDto>();
   const [error, setError] = useState("");
   const [city, setCity] = useState<CityDetailResponseDto>();
 
@@ -55,22 +54,19 @@ const AdminDeleteCompany = () => {
   const navigate = useNavigate();
   let params = useParams();
   const axiosPrivate = useAxiosAuth();
-  const companyId = params.companyId;
-  const apiUrlParams = new FindByCompanyIdRequestParams();
-
-  const deleteCompany = () => {
+  const branchId = params.branchId;
+  
+  const deleteBranch = () => {
     onClose();
-    axiosPrivate.delete("Companies/" + companyId, {
-      params: apiUrlParams,
-    })
+    axiosPrivate.delete("Branches/" + branchId)
       .then((res) => {
         toast({
-          title: "Company deleted",
-          description: company?.name + " deleted successfully.",
+          title: "Branch deleted",
+          description: branch?.name + " deleted successfully.",
           status: "error",
           position: "top-right",
         });
-        navigate("/admin/company/list");
+        navigate("/admin/company/branches/list");
       })
       .catch((err) => {
         console.log(err);
@@ -87,21 +83,21 @@ const AdminDeleteCompany = () => {
     </Alert>
   );
 
-  const showCompanyInfo = () => (
+  const showBranchInfo = () => (
     <div>
       <TableContainer>
         <Table variant="simple">
           <Tbody>
             <Tr>
               <Th>Name</Th>
-              <Td>{company?.name}</Td>
+              <Td>{branch?.name}</Td>
             </Tr>
             <Tr>
               <Th>Address</Th>
               <Td>
-                {company?.address1 ? company.address1 : ""}
-                {company?.address1 ? <Divider /> : ""}
-                {company?.address2 ? company.address2 : ""}
+                {branch?.address1 ? branch.address1 : ""}
+                {branch?.address1 ? <Divider /> : ""}
+                {branch?.address2 ? branch.address2 : ""}
               </Td>
             </Tr>
             <Tr>
@@ -115,7 +111,7 @@ const AdminDeleteCompany = () => {
       </TableContainer>
       <HStack pt={4} spacing={4}>
         <Link onClick={onOpen}>
-          <DeleteButton text="YES, I WANT TO DELETE THIS COMPANY" />
+          <DeleteButton text="YES, I WANT TO DELETE THIS BRANCH" />
         </Link>
       </HStack>
     </div>
@@ -130,7 +126,7 @@ const AdminDeleteCompany = () => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Delete Company
+            Delete Branch
           </AlertDialogHeader>
 
           <AlertDialogBody>
@@ -141,8 +137,8 @@ const AdminDeleteCompany = () => {
             <Link ref={cancelRef} onClick={onClose}>
               <CancelButton />
             </Link>
-            <Link onClick={deleteCompany} ml={3}>
-              <DeleteButton text="Delete Company" />
+            <Link onClick={deleteBranch} ml={3}>
+              <DeleteButton text="Delete Branch" />
             </Link>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -151,20 +147,18 @@ const AdminDeleteCompany = () => {
   );
 
   useEffect(() => {
-    loadCompany();
+    loadBranch();
   }, []);
 
   useEffect(() => {
     loadCityDetails();
-  }, [company?.cityId]);
+  }, [branch?.cityId]);
 
-  const loadCompany = () => {
-    axiosPrivate.get("Companies/" + companyId, {
-      params: apiUrlParams,
-    })
+  const loadBranch = () => {
+    axiosPrivate.get("Branches/" + branchId)
       .then((res) => {
         // console.log(res.data);
-        setCompany(res.data);
+        setBranch(res.data);
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;
@@ -174,8 +168,8 @@ const AdminDeleteCompany = () => {
 
   const loadCityDetails = () => {
     
-    if (company?.cityId) {
-      axiosPrivate.get("Cities/" + company?.cityId).then(res => {
+    if (branch?.cityId) {
+      axiosPrivate.get("Cities/" + branch?.cityId).then(res => {
         setCity(res.data);
       }).catch(err => {
         console.log(err);
@@ -186,11 +180,11 @@ const AdminDeleteCompany = () => {
   const displayHeading = () => (
     <Flex>
       <Box>
-        <Heading fontSize={"xl"}>Delete Company</Heading>
+        <Heading fontSize={"xl"}>Delete Branch</Heading>
       </Box>
       <Spacer />
       <Box>
-        <Link ml={2} as={RouteLink} to="/admin/company/list">
+        <Link ml={2} as={RouteLink} to="/admin/company/branches/list">
           <BackButton />
         </Link>
       </Box>
@@ -202,14 +196,14 @@ const AdminDeleteCompany = () => {
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         {displayHeading()}
         <Text fontSize="xl">
-          Are you sure you want to delete the following company?
+          Are you sure you want to delete the following branch?
         </Text>
         {error && showError()}
-        {showCompanyInfo()}
+        {showBranchInfo()}
       </Stack>
       {showAlertDialog()}
     </Box>
-  );
-};
+  )
+}
 
-export default AdminDeleteCompany;
+export default AdminDeleteBranch

@@ -42,7 +42,7 @@ namespace hr.Services
         private Branch findByBranchIdIfExists(Guid branchId, Guid? accountId, bool trackChanges)
         {
             var branchEntity = _repositoryManager.BranchRepository.FindByCondition(
-                x => x.CompanyId == branchId && x.Company.AccountId == accountId,
+                x => x.BranchId == branchId && x.Company.AccountId == accountId,
                 trackChanges,
                 include: i => i.Include(x => x.Company)
                 )

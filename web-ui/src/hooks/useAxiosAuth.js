@@ -26,10 +26,10 @@ const useAxiosAuth = () => {
       async (error) => {
         const prevRequest = error?.config;
         if (error?.response?.status === 401 && !prevRequest?.sent) {
-          console.log('Token expired, getting new token');
+          // console.log('Token expired, getting new token');
           prevRequest.sent = true;
           const newAccessToken = await refresh();
-          console.log("got new token: " + newAccessToken);
+          // console.log("got new token: " + newAccessToken);
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           return Api(prevRequest);
         }

@@ -23,7 +23,7 @@ namespace Common.JsonConverters
             Guid result;
             var isValid = Guid.TryParse(value, out result);
             if (isValid == false)
-                throw new InvalidDataException("Invalid cityId: " + value);
+                throw new InvalidDataException("Invalid Id: " + value);
 
             return result;
         }

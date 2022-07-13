@@ -52,6 +52,7 @@ const CityDropdown = ({ stateId, handleChange, isDisabled, selectedCity }) => {
       isDisabled={isDisabled}
       value={selectedCity}
       isLoading={isLoading}
+      isMulti={false}
     ></Select>
   );
 };
