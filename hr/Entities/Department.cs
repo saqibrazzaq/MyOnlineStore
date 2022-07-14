@@ -17,6 +17,7 @@ namespace hr.Entities
         public string? Name { get; set; }
 
         // Foreign keys
+        [Required]
         public Guid? BranchId { get; set; }
         [ForeignKey("BranchId")]
         public Branch? Branch { get; set; }

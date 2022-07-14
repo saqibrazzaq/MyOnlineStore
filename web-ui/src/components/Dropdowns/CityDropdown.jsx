@@ -21,7 +21,7 @@ const CityDropdown = ({ stateId, handleChange, isDisabled, selectedCity }) => {
           setItems(res.data.pagedList);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         }).finally(() => {
           setIsLoading(false);
         });

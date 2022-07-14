@@ -56,7 +56,8 @@ const AdminUpdateBranch = () => {
   }, [branchId]);
 
   const loadBranchDetails = () => {
-    axiosPrivate.get("Branches/" + branchId)
+    axiosPrivate
+      .get("Branches/" + branchId)
       .then((res) => {
         // console.log(res.data);
         setBranchData(res.data);
@@ -69,12 +70,15 @@ const AdminUpdateBranch = () => {
   };
 
   const loadCompanyDetails = (companyId: string) => {
-    axiosPrivate.get("Companies/" + companyId).then(res => {
-      setSelectedCompany(res.data);
-    }).catch(err => {
-      console.log(err);
-    })
-  }
+    axiosPrivate
+      .get("Companies/" + companyId)
+      .then((res) => {
+        setSelectedCompany(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // Formik validation schema
   const validationSchema = Yup.object({
@@ -98,7 +102,8 @@ const AdminUpdateBranch = () => {
 
   const createBranch = (values: UpdateBranchRequestParams) => {
     console.log(values);
-    axiosPrivate.post("Branches", values)
+    axiosPrivate
+      .post("Branches", values)
       .then((res) => {
         setSuccess("Branch created successfully. ");
         navigate("/admin/company/branches/update/" + res.data.companyId);
@@ -112,7 +117,8 @@ const AdminUpdateBranch = () => {
   };
 
   const updateBranch = (values: UpdateBranchRequestParams) => {
-    axiosPrivate.put("Branches/" + branchId, values)
+    axiosPrivate
+      .put("Branches/" + branchId, values)
       .then((res) => {
         // console.log("Branch updated successfully.");
         setSuccess("Branch updated successfully.");
@@ -142,11 +148,14 @@ const AdminUpdateBranch = () => {
 
   const loadCityDetails = () => {
     if (cityId) {
-      axiosPrivate.get("Cities/" + cityId).then(res => {
-        setSelectedCity(res.data);
-      }).catch(err => {
-        console.log(err);
-      });
+      axiosPrivate
+        .get("Cities/" + cityId)
+        .then((res) => {
+          setSelectedCity(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -167,13 +176,19 @@ const AdminUpdateBranch = () => {
               {success && showUpdateSuccess()}
               <FormControl isInvalid={!!errors.companyId && touched.companyId}>
                 <FormLabel htmlFor="companyId">Company</FormLabel>
-                <Field as={Input} id="companyId" name="companyId" type="hidden" />
+                <Field
+                  as={Input}
+                  id="companyId"
+                  name="companyId"
+                  type="hidden"
+                />
                 <CompanyDropdown
-                selectedCompany={selectedCompany}
-                handleChange={(newValue?: CompanyResponseDto) => {
-                  setFieldValue("companyId", newValue?.companyId);
-                  setSelectedCompany(newValue);
-                }} />
+                  selectedCompany={selectedCompany}
+                  handleChange={(newValue?: CompanyResponseDto) => {
+                    setFieldValue("companyId", newValue?.companyId);
+                    setSelectedCompany(newValue);
+                  }}
+                />
                 <FormErrorMessage>{errors.companyId}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.name && touched.name}>
@@ -195,7 +210,8 @@ const AdminUpdateBranch = () => {
                 <FormLabel htmlFor="cityId">City</FormLabel>
                 <Field as={Input} id="cityId" name="cityId" type="hidden" />
                 <FormLabel fontWeight={"normal"} fontSize={"lg"}>
-                  {selectedCity?.name}, {selectedCity?.stateName}, {selectedCity?.countryName}
+                  {selectedCity?.name}, {selectedCity?.stateName},{" "}
+                  {selectedCity?.countryName}
                 </FormLabel>
                 <FormErrorMessage>{errors.cityId}</FormErrorMessage>
 
@@ -240,7 +256,7 @@ const AdminUpdateBranch = () => {
         {showUpdateForm()}
       </Stack>
     </Box>
-  )
-}
+  );
+};
 
-export default AdminUpdateBranch
+export default AdminUpdateBranch;

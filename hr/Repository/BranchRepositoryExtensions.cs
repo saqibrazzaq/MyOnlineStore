@@ -38,7 +38,7 @@ namespace hr.Repository
             if (string.IsNullOrWhiteSpace(orderBy))
                 return items.OrderBy(e => e.Name);
 
-            var orderQuery = OrderQueryBuilder.CreateOrderQuery<Company>(orderBy);
+            var orderQuery = OrderQueryBuilder.CreateOrderQuery<Branch>(orderBy);
 
             if (string.IsNullOrWhiteSpace(orderQuery))
                 return items.OrderBy(e => e.Name);

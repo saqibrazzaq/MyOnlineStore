@@ -1,4 +1,6 @@
-﻿using hr.Entities;
+﻿using Common.Models.Request;
+using hr.Dtos.Department;
+using hr.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,7 @@ namespace hr.Repository
 {
     public interface IDepartmentRepository : IHrRepositoryBase<Department>
     {
+        PagedList<Department> SearchDepartments(SearchDepartmentRequestDto dto,
+            bool trackChanges);
     }
 }
