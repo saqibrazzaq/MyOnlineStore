@@ -107,6 +107,7 @@ namespace MyOnlineStore.Extensions
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IBranchService, BranchService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IDesignationService, DesignationService>();
         }
 
         public static void ConfigureValidationFilter(this IServiceCollection services)

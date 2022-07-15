@@ -2,6 +2,7 @@ import { Box, Center, Flex, Square, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { FiUsers, FiHome, FiTrendingUp } from "react-icons/fi";
+import {FaMedal} from 'react-icons/fa';
 import {GrUserAdmin} from 'react-icons/gr';
 import LeftSideMenu, { LinkItemProps } from "./LeftSideMenu";
 
@@ -9,6 +10,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Back", icon: FiHome, href: "/admin" },
   { name: "Companies", icon: GrUserAdmin, href: "/admin/company/list" },
   { name: "Branches", icon: FiUsers, href: "/admin/company/branches/list" },
+  { name: "Designations", icon: FaMedal, href: "/admin/company/designations/list" },
 ];
 
 const AdminCompanyLayout = () => {
