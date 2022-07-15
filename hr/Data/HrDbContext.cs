@@ -30,6 +30,11 @@ namespace hr.Data
                 .HasOne(x => x.Company)
                 .WithMany(x => x.Branches)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Department>()
+                .HasOne(x => x.Branch)
+                .WithMany(x => x.Departments)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
