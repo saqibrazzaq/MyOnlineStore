@@ -23,13 +23,15 @@ namespace hr
 
             // Branch
             CreateMap<Branch, BranchResponseDto>();
-            CreateMap<Branch, BranchDetailResponseDto>();
+            CreateMap<Branch, BranchDetailResponseDto>()
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Company.Name));
             CreateMap<CreateBranchRequestDto, Branch>();
             CreateMap<UpdateBranchRequestDto, Branch>();
 
             // Department
             CreateMap<Department, DepartmentResponseDto>();
-            CreateMap<Department, DepartmentDetailResponseDto>();
+            CreateMap<Department, DepartmentDetailResponseDto>()
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Branch.Company.Name));
             CreateMap<CreateDepartmentRequestDto, Department>();
             CreateMap<UpdateDepartmentRequestDto, Department>();
         }

@@ -6,5 +6,6 @@ export default interface BranchDetailResponseDto {
   address1?: string;
   address2?: string;
   companyId?: string;
+  companyName?: string;
   cityId?: string;
 }

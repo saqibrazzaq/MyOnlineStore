@@ -47,10 +47,9 @@ const CityStateCountryDropdown = ({ cityId, handleChange }) => {
 
   const handleCityChange = (newValue) => {
     setCity(newValue);
-    
+
     handleChange(newValue);
-    
-  }
+  };
 
   useEffect(() => {
     initializeCityStateCountry();
@@ -113,18 +112,23 @@ const CityStateCountryDropdown = ({ cityId, handleChange }) => {
   };
 
   const initializeCity = (cityDetailResponse) => {
-    const citySearchParams = new CitySearchRequestParams(cityDetailResponse.stateId,
-      cityDetailResponse.cityId, "");
-      axiosPrivate.get("Cities/search", {
-        params: citySearchParams
-      }).then(res => {
+    const citySearchParams = new CitySearchRequestParams(
+      cityDetailResponse.stateId,
+      cityDetailResponse.cityId,
+      ""
+    );
+    axiosPrivate
+      .get("Cities/search", {
+        params: citySearchParams,
+      })
+      .then((res) => {
         const cityResponse = res.data.pagedList[0];
         setCity(cityResponse);
         setIsCityDropdownDisabled(false);
         // console.log("Initial city: " + cityResponse.name);
         handleChange(cityResponse);
-      })
-  }
+      });
+  };
 
   return (
     <div>

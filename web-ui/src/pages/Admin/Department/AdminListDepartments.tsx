@@ -13,53 +13,65 @@ import {
   TableContainer,
   Tbody,
   Td,
+  Text,
   Tfoot,
   Th,
   Thead,
-  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import DeleteIconButton from "../../../components/Buttons/DeleteIconButton";
-import { Link as RouteLink, useNavigate } from "react-router-dom";
+import { Link as RouteLink, useNavigate, useParams } from "react-router-dom";
 import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import BackButton from "../../../components/Buttons/BackButton";
 import Common from "../../../utility/Common";
 import PagedResponse from "../../../Models/PagedResponse";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
-import BranchResponseDto from "../../../Models/Hr/Branch/BranchResponseDto";
-import SearchBranchesRequestParams from "../../../Models/Hr/Branch/SearchBranchesRequestParams";
-import CompanyDropdown from "../../../components/Dropdowns/CompanyDropdown";
-import CompanyResponseDto from "../../../Models/Hr/Company/CompanyResponseDto";
-import DepartmentIconButton from "../../../components/Buttons/DepartmentIconButton";
+import DepartmentResponseDto from "../../../Models/Hr/Department/DepartmentResponse";
+import SearchDepartmentsRequestParams from "../../../Models/Hr/Department/SearchDepartmentsRequestParams";
+import BranchDetailResponseDto from "../../../Models/Hr/Branch/BranchDetailResponse";
 
-const AdminListBranches = () => {
-  const [pagedRes, setPagedRes] = useState<PagedResponse<BranchResponseDto>>();
+const AdminListDepartments = () => {
+  const [pagedRes, setPagedRes] = useState<PagedResponse<DepartmentResponseDto>>();
   const axiosPrivate = useAxiosAuth();
-  const [companyId, setCompanyId] = useState<string>("");
+  const params = useParams();
+  const branchId = params.branchId;
   const [searchText, setSearchText] = useState<string>("");
-  const [selectedCompany, setSelectedCompany] = useState<CompanyResponseDto>();
+  const [branchDetails, setBranchDetails] = useState<BranchDetailResponseDto>();
 
   useEffect(() => {
-    searchBranches(
-      new SearchBranchesRequestParams(
-        companyId,
+    searchDepartments(
+      new SearchDepartmentsRequestParams(
+        branchId,
         searchText,
         1,
         Common.DEFAULT_PAGE_SIZE,
         ""
       )
     );
-  }, []);
+  }, [branchId]);
 
-  const searchBranches = (searchParams: SearchBranchesRequestParams) => {
+  useEffect(() => {
+    loadBranchDetails();
+  }, [branchId]);
+
+  const loadBranchDetails = () => {
+    axiosPrivate.get("Branches/" + branchId).then(res => {
+      // console.log(res.data);
+      setBranchDetails(res.data);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  const searchDepartments = (searchParams: SearchDepartmentsRequestParams) => {
     axiosPrivate
-      .get("Branches/search", {
+      .get("Departments/search", {
         params: searchParams,
       })
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setPagedRes(res.data);
       })
       .catch((err) => {
@@ -70,34 +82,34 @@ const AdminListBranches = () => {
   const previousPage = () => {
     if (pagedRes?.metaData) {
       let previousPageNumber = (pagedRes?.metaData?.currentPage || 2) - 1;
-      let searchParams = new SearchBranchesRequestParams(
-        companyId,
+      let searchParams = new SearchDepartmentsRequestParams(
+        branchId,
         searchText,
         previousPageNumber,
         Common.DEFAULT_PAGE_SIZE,
         ""
       );
 
-      searchBranches(searchParams);
+      searchDepartments(searchParams);
     }
   };
 
   const nextPage = () => {
     if (pagedRes?.metaData) {
       let nextPageNumber = (pagedRes?.metaData?.currentPage || 0) + 1;
-      let searchParams = new SearchBranchesRequestParams(
-        companyId,
+      let searchParams = new SearchDepartmentsRequestParams(
+        branchId,
         searchText,
         nextPageNumber,
         Common.DEFAULT_PAGE_SIZE,
         ""
       );
 
-      searchBranches(searchParams);
+      searchDepartments(searchParams);
     }
   };
 
-  const displayBranches = () => (
+  const displayDepartments = () => (
     <TableContainer>
       <Table variant="simple">
         <Thead>
@@ -109,26 +121,19 @@ const AdminListBranches = () => {
         <Tbody>
           {pagedRes?.pagedList ? (
             pagedRes?.pagedList.map((item) => (
-              <Tr key={item.branchId}>
+              <Tr key={item.departmentId}>
                 <Td>{item.name}</Td>
                 <Td>
                   <Link
                     mr={2}
                     as={RouteLink}
-                    to={"/admin/company/departments/list/" + item.branchId}
-                  >
-                    <DepartmentIconButton />
-                  </Link>
-                  <Link
-                    mr={2}
-                    as={RouteLink}
-                    to={"/admin/company/branches/update/" + item.branchId}
+                    to={"/admin/company/departments/update/" + item.departmentId}
                   >
                     <UpdateIconButton />
                   </Link>
                   <Link
                     as={RouteLink}
-                    to={"/admin/company/branches/delete/" + item.branchId}
+                    to={"/admin/company/departments/delete/" + item.departmentId}
                   >
                     <DeleteIconButton />
                   </Link>
@@ -170,14 +175,14 @@ const AdminListBranches = () => {
   const displayHeading = () => (
     <Flex>
       <Box>
-        <Heading fontSize={"xl"}>Branches</Heading>
+        <Heading fontSize={"xl"}>Departments</Heading>
       </Box>
       <Spacer />
       <Box>
-        <Link as={RouteLink} to="/admin/company/branches/update">
-          <RegularButton text="Create branch" />
+        <Link as={RouteLink} to="/admin/company/departments/update">
+          <RegularButton text="Create Department" />
         </Link>
-        <Link ml={2} as={RouteLink} to="/admin/company">
+        <Link ml={2} as={RouteLink} to="/admin/company/branches/list">
           <BackButton />
         </Link>
       </Box>
@@ -187,24 +192,9 @@ const AdminListBranches = () => {
   const displaySearchBar = () => (
     <Flex>
       <Box flex={1}>
-        <CompanyDropdown
-          selectedCompany={selectedCompany}
-          handleChange={(newValue?: CompanyResponseDto) => {
-            setSelectedCompany(newValue);
-            setCompanyId(newValue?.companyId || "");
-            searchBranches(
-              new SearchBranchesRequestParams(
-                newValue?.companyId,
-                searchText,
-                1,
-                Common.DEFAULT_PAGE_SIZE,
-                ""
-              )
-            );
-          }}
-        />
+        <Text fontSize={'xl'}>{branchDetails?.name}, {branchDetails?.companyName}</Text>
       </Box>
-
+      
       <Box ml={4}>
         <Input
           placeholder="Search..."
@@ -212,9 +202,9 @@ const AdminListBranches = () => {
           onChange={(e) => setSearchText(e.currentTarget.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              searchBranches(
-                new SearchBranchesRequestParams(
-                  companyId,
+              searchDepartments(
+                new SearchDepartmentsRequestParams(
+                  branchId,
                   searchText,
                   1,
                   Common.DEFAULT_PAGE_SIZE,
@@ -229,9 +219,9 @@ const AdminListBranches = () => {
         <RegularButton
           text="Search"
           onClick={() => {
-            searchBranches(
-              new SearchBranchesRequestParams(
-                companyId,
+            searchDepartments(
+              new SearchDepartmentsRequestParams(
+                branchId,
                 searchText,
                 1,
                 Common.DEFAULT_PAGE_SIZE,
@@ -249,10 +239,10 @@ const AdminListBranches = () => {
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         {displayHeading()}
         {displaySearchBar()}
-        {displayBranches()}
+        {displayDepartments()}
       </Stack>
     </Box>
-  );
-};
+  )
+}
 
-export default AdminListBranches;
+export default AdminListDepartments

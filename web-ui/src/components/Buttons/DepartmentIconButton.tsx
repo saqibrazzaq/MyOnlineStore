@@ -1,20 +1,20 @@
 import { IconButton, Tooltip } from "@chakra-ui/react";
 import React from "react";
-import { AiFillEdit } from "react-icons/ai";
+import { VscOrganization } from "react-icons/vsc";
 
-const UpdateIconButton = () => {
+const DepartmentIconButton = () => {
   return (
-    <Tooltip label="Edit">
+    <Tooltip label="Departments">
     <IconButton
       variant="outline"
       size="sm"
       fontSize="18px"
       colorScheme="blue"
-      icon={<AiFillEdit />}
+      icon={<VscOrganization />}
       aria-label="Edit"
     />
     </Tooltip>
   )
 }
 
-export default UpdateIconButton
+export default DepartmentIconButton

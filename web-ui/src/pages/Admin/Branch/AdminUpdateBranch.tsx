@@ -42,7 +42,7 @@ const AdminUpdateBranch = () => {
   const [success, setSuccess] = useState("");
   const axiosPrivate = useAxiosAuth();
   const navigate = useNavigate();
-  let params = useParams();
+  const params = useParams();
   const branchId = params.branchId;
   const updateText = branchId ? "Update Branch" : "Create branch";
   const [branchData, setBranchData] = useState(

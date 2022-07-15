@@ -13,6 +13,7 @@ namespace hr.Dtos.Branch
         public string? Address1 { get; set; }
         public string? Address2 { get; set; }
         public Guid? CompanyId { get; set; }
+        public string? CompanyName { get; set; }
         public Guid? CityId { get; set; }
     }
 }
