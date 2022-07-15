@@ -106,12 +106,16 @@ const AdminDeleteBranch = () => {
                 {city?.name}, {city?.stateName} {city?.countryName}
               </Td>
             </Tr>
+            <Tr>
+              <Th>Department Count</Th>
+              <Td>{branch?.departmentCount}</Td>
+            </Tr>
           </Tbody>
         </Table>
       </TableContainer>
       <HStack pt={4} spacing={4}>
         <Link onClick={onOpen}>
-          <DeleteButton text="YES, I WANT TO DELETE THIS BRANCH" />
+          <DeleteButton disabled={branch?.departmentCount || 0 > 0 ? true : false} text="YES, I WANT TO DELETE THIS BRANCH" />
         </Link>
       </HStack>
     </div>

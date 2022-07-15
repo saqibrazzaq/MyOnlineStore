@@ -8,4 +8,5 @@ export default interface BranchDetailResponseDto {
   companyId?: string;
   companyName?: string;
   cityId?: string;
+  departmentCount: number;
 }

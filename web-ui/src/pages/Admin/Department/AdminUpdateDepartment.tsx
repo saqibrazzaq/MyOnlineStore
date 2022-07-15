@@ -77,7 +77,7 @@ const AdminUpdateDepartment = () => {
 
   const loadBranchDetails = (branchId: string) => {
     setError("");
-    console.log("Branch id: " + branchId);
+    // console.log("Branch id: " + branchId);
     if (branchId) {
       axiosPrivate
         .get("Branches/" + branchId)
@@ -101,7 +101,7 @@ const AdminUpdateDepartment = () => {
   const submitForm = (values: UpdateDepartmentRequestParams) => {
     setError("");
     setSuccess("");
-    console.log(values);
+    // console.log(values);
     if (departmentId) {
       updateDepartment(values);
     } else {
@@ -110,7 +110,7 @@ const AdminUpdateDepartment = () => {
   };
 
   const createDepartment = (values: UpdateDepartmentRequestParams) => {
-    console.log(values);
+    // console.log(values);
     axiosPrivate
       .post("Departments", values)
       .then((res) => {
@@ -129,7 +129,7 @@ const AdminUpdateDepartment = () => {
     axiosPrivate
       .put("Departments/" + departmentId, values)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setSuccess("Department updated successfully.");
       })
       .catch((err) => {
@@ -172,7 +172,7 @@ const AdminUpdateDepartment = () => {
               {success && showUpdateSuccess()}
               <FormControl isInvalid={!!errors.branchId && touched.branchId}>
                 <FormLabel htmlFor="branchId">Branch</FormLabel>
-                <Field as={Input} id="branchId" name="branchId" type="text" />
+                <Field as={Input} id="branchId" name="branchId" type="hidden" />
                 <Text fontSize={"xl"}>
                   {branchData?.name}, {branchData?.companyName}
                 </Text>
@@ -200,7 +200,7 @@ const AdminUpdateDepartment = () => {
       </Box>
       <Spacer />
       <Box>
-        <Link ml={2} as={RouteLink} to="/admin/company/branches/list">
+        <Link ml={2} as={RouteLink} to={"/admin/company/departments/list/" + branchId}>
           <BackButton />
         </Link>
       </Box>

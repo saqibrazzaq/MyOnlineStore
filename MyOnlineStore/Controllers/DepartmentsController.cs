@@ -63,7 +63,7 @@ namespace MyOnlineStore.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{branchId}")]
+        [HttpDelete("{departmentId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [Authorize(Roles = Constants.AllAdminRoles)]
         public async Task<IActionResult> Delete(Guid departmentId, [FromQuery] DeleteDepartmentRequestDto dto)

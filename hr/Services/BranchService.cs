@@ -17,12 +17,15 @@ namespace hr.Services
     public class BranchService : IBranchService
     {
         private readonly IHrRepositoryManager _repositoryManager;
+        private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
         public BranchService(IHrRepositoryManager repositoryManager,
-            IMapper mapper)
+            IMapper mapper, 
+            IDepartmentService departmentService)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _departmentService = departmentService;
         }
         public BranchDetailResponseDto Create(CreateBranchRequestDto dto)
         {
@@ -69,6 +72,7 @@ namespace hr.Services
         {
             var branchEntity = findByBranchIdIfExists(branchId, dto.AccountId, false);
             var branchDto = _mapper.Map<BranchDetailResponseDto>(branchEntity);
+            branchDto.DepartmentCount = _departmentService.CountByBranchId(branchId);
             return branchDto;
         }
 

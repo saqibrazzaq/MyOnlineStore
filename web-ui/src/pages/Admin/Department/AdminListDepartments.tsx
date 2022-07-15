@@ -71,7 +71,7 @@ const AdminListDepartments = () => {
         params: searchParams,
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setPagedRes(res.data);
       })
       .catch((err) => {

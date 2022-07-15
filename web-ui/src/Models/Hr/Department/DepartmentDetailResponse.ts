@@ -5,4 +5,5 @@ export default interface DepartmentDetailResponseDto {
   branchName?: string;
   companyId?: string;
   companyName?: string;
+  employeeCount: number;
 }
