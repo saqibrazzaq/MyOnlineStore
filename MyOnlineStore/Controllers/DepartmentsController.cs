@@ -53,7 +53,7 @@ namespace MyOnlineStore.Controllers
             return CreatedAtAction(nameof(FindByDepartmentId), new { res.DepartmentId }, res);
         }
 
-        [HttpPut("{branchId}")]
+        [HttpPut("{departmentId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [Authorize(Roles = Constants.AllAdminRoles)]
         public async Task<IActionResult> Update(Guid departmentId, [FromBody] UpdateDepartmentRequestDto dto)

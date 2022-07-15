@@ -22,7 +22,7 @@ namespace hr.Repository
                 .Where(x => x.Branch.Company.AccountId == searchParams.AccountId);
 
             itemsToReturn = itemsToReturn.Where(
-                    x => x.Branch.CompanyId == searchParams.BranchId);
+                    x => x.BranchId == searchParams.BranchId);
 
             if (string.IsNullOrWhiteSpace(searchParams.SearchText) == false)
             {

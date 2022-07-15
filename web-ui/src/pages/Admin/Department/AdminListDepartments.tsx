@@ -179,7 +179,7 @@ const AdminListDepartments = () => {
       </Box>
       <Spacer />
       <Box>
-        <Link as={RouteLink} to="/admin/company/departments/update">
+        <Link as={RouteLink} to={"/admin/company/departments/update?branchId=" + branchId}>
           <RegularButton text="Create Department" />
         </Link>
         <Link ml={2} as={RouteLink} to="/admin/company/branches/list">

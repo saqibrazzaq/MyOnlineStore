@@ -106,7 +106,7 @@ const AdminUpdateBranch = () => {
       .post("Branches", values)
       .then((res) => {
         setSuccess("Branch created successfully. ");
-        navigate("/admin/company/branches/update/" + res.data.companyId);
+        navigate("/admin/company/branches/update/" + res.data.branchId);
       })
       .catch((err) => {
         console.log(err);

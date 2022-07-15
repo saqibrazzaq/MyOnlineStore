@@ -3,10 +3,10 @@ export default class UpdateDepartmentRequestParams {
   branchId?: string;
 
   constructor(
-    name?: string,
-    companyId?: string
+    branchId?: string,
+    name?: string
   ) {
     this.name = name;
-    this.branchId = companyId;
+    this.branchId = branchId;
   }
 }
