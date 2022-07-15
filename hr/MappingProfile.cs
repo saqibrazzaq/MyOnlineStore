@@ -2,6 +2,7 @@
 using hr.Dtos.Branch;
 using hr.Dtos.Company;
 using hr.Dtos.Department;
+using hr.Dtos.Designation;
 using hr.Entities;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace hr
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Branch.Company.Name));
             CreateMap<CreateDepartmentRequestDto, Department>();
             CreateMap<UpdateDepartmentRequestDto, Department>();
+
+            // Designation
+            CreateMap<Designation, DesignationResponseDto>();
+            CreateMap<CreateDesignationRequestDto, Designation>();
+            CreateMap<UpdateDesignationRequestDto, Designation>();
         }
     }
 }
