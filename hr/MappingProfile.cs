@@ -38,8 +38,7 @@ namespace hr
 
             // Designation
             CreateMap<Designation, DesignationResponseDto>();
-            CreateMap<Designation, DesignationDetailResponseDto>()
-                .ForMember(dest => dest.EmployeeCount, opt => opt.MapFrom(src => src.Employees.Count()));
+            CreateMap<Designation, DesignationDetailResponseDto>();
             CreateMap<CreateDesignationRequestDto, Designation>();
             CreateMap<UpdateDesignationRequestDto, Designation>();
         }

@@ -21,5 +21,8 @@ namespace hr.Entities
         public Guid? BranchId { get; set; }
         [ForeignKey("BranchId")]
         public Branch? Branch { get; set; }
+
+        // Child tables
+        public IEnumerable<Employee>? Employees { get; set; }
     }
 }

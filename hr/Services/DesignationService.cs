@@ -63,23 +63,9 @@ namespace hr.Services
             return designationEntity;
         }
 
-        private Designation findDesignationWithEmployeeCountByDesignationIdIfExists(Guid designationId, Guid? accountId, bool trackChanges)
-        {
-            var designationEntity = _repositoryManager.DesignationRepository.FindByCondition(
-                x => x.DesignationId == designationId && x.AccountId == accountId,
-                trackChanges,
-                include: i => i.Include(x => x.Employees)
-                )
-                .FirstOrDefault();
-            if (designationEntity == null)
-                throw new NotFoundException("No designation found with id " + designationId);
-
-            return designationEntity;
-        }
-
         public DesignationDetailResponseDto FindByDesignationId(Guid designationId, FindByDesignationIdRequestDto dto)
         {
-            var designationEntity = findDesignationWithEmployeeCountByDesignationIdIfExists(
+            var designationEntity = findByDesignationIdIfExists(
                 designationId, dto.AccountId, false);
             var designationDto = _mapper.Map<DesignationDetailResponseDto>(designationEntity);
             return designationDto;
