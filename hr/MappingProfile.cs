@@ -3,6 +3,7 @@ using hr.Dtos.Branch;
 using hr.Dtos.Company;
 using hr.Dtos.Department;
 using hr.Dtos.Designation;
+using hr.Dtos.Gender;
 using hr.Entities;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,9 @@ namespace hr
             CreateMap<Designation, DesignationDetailResponseDto>();
             CreateMap<CreateDesignationRequestDto, Designation>();
             CreateMap<UpdateDesignationRequestDto, Designation>();
+
+            // Gender
+            CreateMap<Gender, GenderResponseDto>();
         }
     }
 }
