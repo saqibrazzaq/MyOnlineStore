@@ -11,12 +11,12 @@ namespace hr.Services
 {
     public interface IDesignationService
     {
-        DesignationResponseDto FindByDesignationId(Guid designationId, FindByDesignationIdRequestDto dto);
+        DesignationDetailResponseDto FindByDesignationId(Guid designationId, FindByDesignationIdRequestDto dto);
         DesignationResponseDto Create(CreateDesignationRequestDto dto);
         void Update(Guid designationId, UpdateDesignationRequestDto dto);
         void Delete(Guid designationId, DeleteDesignationRequestDto dto);
         ApiOkPagedResponse<IEnumerable<DesignationResponseDto>, MetaData>
             Search(SearchDesignationRequestDto dto);
-        int Count(Guid accountId);
+        int Count(Guid? accountId);
     }
 }

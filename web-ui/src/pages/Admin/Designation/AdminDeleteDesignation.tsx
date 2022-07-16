@@ -36,32 +36,32 @@ import CancelButton from "../../../components/Buttons/CancelButton";
 import DeleteButton from "../../../components/Buttons/DeleteButton";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
-import DepartmentDetailResponseDto from "../../../Models/Hr/Department/DepartmentDetailResponse";
+import DesignationDetailResponseDto from "../../../Models/Hr/Designation/DesignationDetailResponseDto";
 
-const AdminDeleteDepartment = () => {
+const AdminDeleteDesignation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef<HTMLAnchorElement>(null);
 
-  const [department, setDepartment] = useState<DepartmentDetailResponseDto>();
+  const [designation, setDesignation] = useState<DesignationDetailResponseDto>();
   const [error, setError] = useState("");
   
   const toast = useToast();
   const navigate = useNavigate();
   let params = useParams();
   const axiosPrivate = useAxiosAuth();
-  const departmentId = params.departmentId;
+  const designationId = params.designationId;
   
-  const deleteDepartment = () => {
+  const deleteDesignation = () => {
     onClose();
-    axiosPrivate.delete("Departments/" + departmentId)
+    axiosPrivate.delete("Designations/" + designationId)
       .then((res) => {
         toast({
-          title: "Department deleted",
-          description: department?.name + " deleted successfully.",
+          title: "Designation deleted",
+          description: designation?.name + " deleted successfully.",
           status: "error",
           position: "top-right",
         });
-        navigate("/admin/company/departments/list/" + department?.branchId);
+        navigate("/admin/company/designations/list/");
       })
       .catch((err) => {
         console.log(err);
@@ -78,25 +78,25 @@ const AdminDeleteDepartment = () => {
     </Alert>
   );
 
-  const showDepartmentInfo = () => (
+  const showDesignationInfo = () => (
     <div>
       <TableContainer>
         <Table variant="simple">
           <Tbody>
             <Tr>
               <Th>Name</Th>
-              <Td>{department?.name}</Td>
+              <Td>{designation?.name}</Td>
             </Tr>
             <Tr>
               <Th>Employee Count</Th>
-              <Td>{department?.employeeCount}</Td>
+              <Td>{designation?.employeeCount}</Td>
             </Tr>
           </Tbody>
         </Table>
       </TableContainer>
       <HStack pt={4} spacing={4}>
         <Link onClick={onOpen}>
-          <DeleteButton disabled={department?.employeeCount || 0 > 0 ? true : false} text="YES, I WANT TO DELETE THIS DEPARTMENT" />
+          <DeleteButton disabled={designation?.employeeCount || 0 > 0 ? true : false} text="YES, I WANT TO DELETE THIS DESIGNATION" />
         </Link>
       </HStack>
     </div>
@@ -111,7 +111,7 @@ const AdminDeleteDepartment = () => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Delete Department
+            Delete Designation
           </AlertDialogHeader>
 
           <AlertDialogBody>
@@ -122,8 +122,8 @@ const AdminDeleteDepartment = () => {
             <Link ref={cancelRef} onClick={onClose}>
               <CancelButton />
             </Link>
-            <Link onClick={deleteDepartment} ml={3}>
-              <DeleteButton text="Delete Department" />
+            <Link onClick={deleteDesignation} ml={3}>
+              <DeleteButton text="Delete Designation" />
             </Link>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -136,10 +136,10 @@ const AdminDeleteDepartment = () => {
   }, []);
 
   const loadDepartment = () => {
-    axiosPrivate.get("Departments/" + departmentId)
+    axiosPrivate.get("Designations/" + designationId)
       .then((res) => {
         // console.log(res.data);
-        setDepartment(res.data);
+        setDesignation(res.data);
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;
@@ -150,11 +150,11 @@ const AdminDeleteDepartment = () => {
   const displayHeading = () => (
     <Flex>
       <Box>
-        <Heading fontSize={"xl"}>Delete Department</Heading>
+        <Heading fontSize={"xl"}>Delete Designation</Heading>
       </Box>
       <Spacer />
       <Box>
-        <Link ml={2} as={RouteLink} to={"/admin/company/departments/list/" + department?.branchId}>
+        <Link ml={2} as={RouteLink} to={"/admin/company/Designations/list/"}>
           <BackButton />
         </Link>
       </Box>
@@ -165,14 +165,14 @@ const AdminDeleteDepartment = () => {
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         {displayHeading()}
         <Text fontSize="xl">
-          Are you sure you want to delete the following Department?
+          Are you sure you want to delete the following Designation?
         </Text>
         {error && showError()}
-        {showDepartmentInfo()}
+        {showDesignationInfo()}
       </Stack>
       {showAlertDialog()}
     </Box>
   )
 }
 
-export default AdminDeleteDepartment
+export default AdminDeleteDesignation

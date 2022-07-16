@@ -32,6 +32,8 @@ import AdminListDepartments from "./pages/Admin/Department/AdminListDepartments"
 import AdminUpdateDepartment from "./pages/Admin/Department/AdminUpdateDepartment";
 import AdminDeleteDepartment from "./pages/Admin/Department/AdminDeleteDepartment";
 import AdminListDesignation from "./pages/Admin/Designation/AdminListDesignation";
+import AdminUpdateDesignation from "./pages/Admin/Designation/AdminUpdateDesignation";
+import AdminDeleteDesignation from "./pages/Admin/Designation/AdminDeleteDesignation";
 
 export const App = () => {
   enum Roles {
@@ -86,6 +88,9 @@ export const App = () => {
               <Route path="departments/update/:departmentId" element={<AdminUpdateDepartment />} />
               <Route path="departments/delete/:departmentId" element={<AdminDeleteDepartment />} />
               <Route path="designations/list" element={<AdminListDesignation />} />
+              <Route path="designations/update" element={<AdminUpdateDesignation />} />
+              <Route path="designations/update/:designationId" element={<AdminUpdateDesignation />} />
+              <Route path="designations/delete/:designationId" element={<AdminDeleteDesignation />} />
             </Route>
           </Route>
         </Route>

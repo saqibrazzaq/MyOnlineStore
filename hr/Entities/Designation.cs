@@ -18,5 +18,8 @@ namespace hr.Entities
 
         // Microservice Api keys
         public Guid? AccountId { get; set; }
+
+        // Child tables
+        public IEnumerable<Employee>? Employees { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace hr.Services
             _repositoryManager = repositoryManager;
         }
 
-        public int Count(Guid accountId)
+        public int Count(Guid? accountId)
         {
             var count = _repositoryManager.DesignationRepository.FindByCondition(
                 x => x.AccountId == accountId,
@@ -58,15 +58,30 @@ namespace hr.Services
                 )
                 .FirstOrDefault();
             if (designationEntity == null)
-                throw new NotFoundException("No department found with id " + designationId);
+                throw new NotFoundException("No designation found with id " + designationId);
 
             return designationEntity;
         }
 
-        public DesignationResponseDto FindByDesignationId(Guid designationId, FindByDesignationIdRequestDto dto)
+        private Designation findDesignationWithEmployeeCountByDesignationIdIfExists(Guid designationId, Guid? accountId, bool trackChanges)
         {
-            var designationEntity = findByDesignationIdIfExists(designationId, dto.AccountId, false);
-            var designationDto = _mapper.Map<DesignationResponseDto>(designationEntity);
+            var designationEntity = _repositoryManager.DesignationRepository.FindByCondition(
+                x => x.DesignationId == designationId && x.AccountId == accountId,
+                trackChanges,
+                include: i => i.Include(x => x.Employees)
+                )
+                .FirstOrDefault();
+            if (designationEntity == null)
+                throw new NotFoundException("No designation found with id " + designationId);
+
+            return designationEntity;
+        }
+
+        public DesignationDetailResponseDto FindByDesignationId(Guid designationId, FindByDesignationIdRequestDto dto)
+        {
+            var designationEntity = findDesignationWithEmployeeCountByDesignationIdIfExists(
+                designationId, dto.AccountId, false);
+            var designationDto = _mapper.Map<DesignationDetailResponseDto>(designationEntity);
             return designationDto;
         }
 
