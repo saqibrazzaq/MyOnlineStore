@@ -2,15 +2,17 @@ import { Box, Center, Flex, Square, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { FiUsers, FiHome, FiTrendingUp } from "react-icons/fi";
-import {FaMedal} from 'react-icons/fa';
-import {GrUserAdmin} from 'react-icons/gr';
+import {FaHatCowboy, FaRegUser} from 'react-icons/fa';
+import {GrOrganization} from 'react-icons/gr';
+import {CgOrganisation} from 'react-icons/cg';
 import LeftSideMenu, { LinkItemProps } from "./LeftSideMenu";
 
 const LinkItems: Array<LinkItemProps> = [
   { name: "Back", icon: FiHome, href: "/admin" },
-  { name: "Companies", icon: GrUserAdmin, href: "/admin/company/list" },
-  { name: "Branches", icon: FiUsers, href: "/admin/company/branches/list" },
-  { name: "Designations", icon: FaMedal, href: "/admin/company/designations/list" },
+  { name: "Companies", icon: CgOrganisation, href: "/admin/company/list" },
+  { name: "Branches", icon: GrOrganization, href: "/admin/company/branches/list" },
+  { name: "Designations", icon: FaHatCowboy, href: "/admin/company/designations/list" },
+  { name: "Employees", icon: FaRegUser, href: "/admin/company/employees/list" },
 ];
 
 const AdminCompanyLayout = () => {
