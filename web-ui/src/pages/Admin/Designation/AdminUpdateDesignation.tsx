@@ -33,7 +33,7 @@ import useAxiosAuth from "../../../hooks/useAxiosAuth";
 import UpdateBranchRequestParams from "../../../Models/Hr/Branch/UpdateBranchRequestParams";
 import UpdateDepartmentRequestParams from "../../../Models/Hr/Department/UpdateDepartmentRequestParams";
 import BranchDetailResponseDto from "../../../Models/Hr/Branch/BranchDetailResponse";
-import UpdateDesignationRequestParams from "../../../Models/Hr/Department/UpdateDesignationRequestParams";
+import UpdateDesignationRequestParams from "../../../Models/Hr/Designation/UpdateDesignationRequestParams";
 
 const AdminUpdateDesignation = () => {
   const [error, setError] = useState("");
