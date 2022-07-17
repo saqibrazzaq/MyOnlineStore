@@ -18,11 +18,14 @@ namespace hr.Services
     {
         private readonly IHrRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IEmployeeService _employeeService;
         public DepartmentService(IHrRepositoryManager repositoryManager,
-            IMapper mapper)
+            IMapper mapper, 
+            IEmployeeService employeeService)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _employeeService = employeeService;
         }
 
         public int CountByBranchId(Guid branchId)
@@ -67,6 +70,7 @@ namespace hr.Services
         {
             var deptEntity = findByDepartmentIdIfExists(departmentId, dto.AccountId, false);
             var deptDto = _mapper.Map<DepartmentDetailResponseDto>(deptEntity);
+            deptDto.EmployeeCount = _employeeService.CountByDepartmentId(departmentId);
             return deptDto;
         }
 

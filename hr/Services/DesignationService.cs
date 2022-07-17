@@ -18,12 +18,15 @@ namespace hr.Services
     {
         private readonly IHrRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IEmployeeService _employeeService;
 
-        public DesignationService(IMapper mapper, 
-            IHrRepositoryManager repositoryManager)
+        public DesignationService(IMapper mapper,
+            IHrRepositoryManager repositoryManager, 
+            IEmployeeService employeeService)
         {
             _mapper = mapper;
             _repositoryManager = repositoryManager;
+            _employeeService = employeeService;
         }
 
         public int Count(Guid? accountId)
@@ -68,6 +71,7 @@ namespace hr.Services
             var designationEntity = findByDesignationIdIfExists(
                 designationId, dto.AccountId, false);
             var designationDto = _mapper.Map<DesignationDetailResponseDto>(designationEntity);
+            designationDto.EmployeeCount = _employeeService.CountByDesignationId(designationId);
             return designationDto;
         }
 

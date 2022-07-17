@@ -35,6 +35,16 @@ namespace hr.Data
                 .HasOne(x => x.Branch)
                 .WithMany(x => x.Departments)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(x => x.Department)
+                .WithMany(x => x.Employees)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(x => x.Designation)
+                .WithMany(x => x.Employees)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -3,6 +3,7 @@ using hr.Dtos.Branch;
 using hr.Dtos.Company;
 using hr.Dtos.Department;
 using hr.Dtos.Designation;
+using hr.Dtos.Employee;
 using hr.Dtos.Gender;
 using hr.Entities;
 using System;
@@ -45,6 +46,15 @@ namespace hr
 
             // Gender
             CreateMap<Gender, GenderResponseDto>();
+
+            // Employee
+            CreateMap<Employee, EmployeeResponseDto>();
+            CreateMap<Employee, EmployeeDetailResponseDto>()
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name))
+                .ForMember(dest => dest.DesignationName, opt => opt.MapFrom(src => src.Designation.Name))
+                .ForMember(dest => dest.GenderName, opt => opt.MapFrom(src => src.Gender.Name));
+            CreateMap<CreateEmployeeRequestDto, Employee>();
+            CreateMap<UpdateEmployeeRequestDto, Employee>();
         }
     }
 }
