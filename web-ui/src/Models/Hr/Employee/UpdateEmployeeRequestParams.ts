@@ -18,6 +18,7 @@ export default class UpdateEmployeeRequestParams {
     lastName?: string,
     phoneNumber?: string,
     hireDate?: Date,
+    birthDate?: Date,
     address1?: string,
     address2?: string,
     cityId?: string,
@@ -30,6 +31,7 @@ export default class UpdateEmployeeRequestParams {
     this.middleName = middleName;
     this.phoneNumber = phoneNumber;
     this.hireDate = hireDate;
+    this.birthDate = birthDate;
     this.address1 = address1;
     this.address2 = address2;
     this.cityId = cityId;
