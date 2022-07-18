@@ -16,11 +16,21 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
+  HStack,
   Input,
   Link,
+  Popover,
+  PopoverAnchor,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
   Spacer,
   Stack,
   Text,
+  useBoolean,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
@@ -47,6 +57,8 @@ import Common from "../../../utility/Common";
 import DepartmentDetailResponseDto from "../../../Models/Hr/Department/DepartmentDetailResponse";
 import DesignationDropdown from "../../../components/Dropdowns/DesignationDropdown";
 import DesignationResponseDto from "../../../Models/Hr/Designation/DesignationResponseDto";
+import DesignationDetailResponseDto from "../../../Models/Hr/Designation/DesignationDetailResponseDto";
+import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
 
 const AdminUpdateEmployee = () => {
   const [error, setError] = useState("");
@@ -74,11 +86,16 @@ const AdminUpdateEmployee = () => {
   );
   const [departmentDetails, setDepartmentDetails] =
     useState<DepartmentDetailResponseDto>();
+  const [designationDetails, setDesignationDetails] =
+    useState<DesignationDetailResponseDto>();
 
   // For dropdowns
   const [companyId, setCompanyId] = useState("");
   const [branchId, setBranchId] = useState("");
   const [departmentId, setDepartmentId] = useState("");
+  const [designationId, setDesignationId] = useState("");
+
+  const [isEditing, setIsEditing] = useBoolean();
 
   useEffect(() => {
     loadEmployee();
@@ -87,6 +104,23 @@ const AdminUpdateEmployee = () => {
   useEffect(() => {
     loadDepartmentDetails();
   }, [employeeData, departmentId]);
+
+  useEffect(() => {
+    loadDesignationDetails();
+  }, [employeeData, designationId]);
+
+  const loadDesignationDetails = () => {
+    if (designationId) {
+      axiosPrivate
+        .get("Designations/" + designationId)
+        .then((res) => {
+          setDesignationDetails(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   const loadDepartmentDetails = () => {
     if (departmentId) {
@@ -108,6 +142,7 @@ const AdminUpdateEmployee = () => {
         .then((res) => {
           setEmployeeData(res.data);
           setDepartmentId(res.data.departmentId);
+          setDesignationId(res.data.designationId);
         })
         .catch((err) => {
           console.log(err);
@@ -204,28 +239,32 @@ const AdminUpdateEmployee = () => {
               <FormControl
                 isInvalid={!!errors.departmentId && touched.departmentId}
               >
-                <FormLabel htmlFor="departmentId">
-                  Department
-                </FormLabel>
+                <FormLabel htmlFor="departmentId">Department</FormLabel>
                 <Field
                   as={Input}
                   id="departmentId"
                   name="departmentId"
                   type="hidden"
                 />
-                <Accordion allowMultiple>
-                  <AccordionItem>
-                    <h2>
-                      <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                          Dept: {departmentDetails?.name}, Branch:{" "}
-                          {departmentDetails?.branchName}, Company:{" "}
-                          {departmentDetails?.companyName}
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel pb={4}>
+
+                <Popover placement="bottom-start">
+                  <PopoverTrigger>
+                    <HStack>
+                      <Text>
+                        {departmentDetails?.name},{" "}
+                        {departmentDetails?.branchName},{" "}
+                        {departmentDetails?.companyName}
+                      </Text>
+                      <UpdateIconButton />
+                    </HStack>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverHeader fontWeight="semibold">
+                      Update Department
+                    </PopoverHeader>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverBody>
                       <CompanyDropdown
                         selectedCompany={undefined}
                         handleChange={(value: CompanyResponseDto) => {
@@ -250,9 +289,9 @@ const AdminUpdateEmployee = () => {
                           setDepartmentId(value?.departmentId || "");
                         }}
                       />
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
 
                 <FormErrorMessage>{errors.departmentId}</FormErrorMessage>
               </FormControl>
@@ -323,14 +362,33 @@ const AdminUpdateEmployee = () => {
                   as={Input}
                   id="designationId"
                   name="designationId"
-                  type="text"
+                  type="hidden"
                 />
-                <DesignationDropdown
-                  selectedDesignation={undefined}
-                  handleChange={(value: DesignationResponseDto) => {
-                    setFieldValue("designationId", value.designationId);
-                  }}
-                />
+                <Popover placement="bottom-start">
+                  <PopoverTrigger>
+                    <HStack>
+                      <Text>{designationDetails?.name}</Text>
+                      <UpdateIconButton />
+                    </HStack>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverHeader fontWeight="semibold">
+                      Update Designation
+                    </PopoverHeader>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverBody>
+                      <DesignationDropdown
+                        selectedDesignation={undefined}
+                        handleChange={(value: DesignationResponseDto) => {
+                          setFieldValue("designationId", value.designationId);
+                          setDesignationId(value?.designationId || "");
+                        }}
+                      />
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
+
                 <FormErrorMessage>{errors.designationId}</FormErrorMessage>
               </FormControl>
               <FormControl
