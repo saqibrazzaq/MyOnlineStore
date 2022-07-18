@@ -28,6 +28,12 @@ namespace hr.Repository
                     x => x.CompanyId == searchParams.CompanyId);
             }
 
+            if (searchParams.BranchId != null && searchParams.BranchId != Guid.Empty)
+            {
+                itemsToReturn = itemsToReturn.Where(
+                    x => x.BranchId == searchParams.BranchId);
+            }
+
 
             return itemsToReturn;
         }

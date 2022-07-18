@@ -10,5 +10,6 @@ namespace hr.Dtos.Branch
     public class SearchBranchesRequestDto : PagedRequestDto
     {
         public Guid? CompanyId { get; set; }
+        public Guid? BranchId { get; set; }
     }
 }

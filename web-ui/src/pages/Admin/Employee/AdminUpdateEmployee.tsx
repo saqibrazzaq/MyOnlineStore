@@ -1,4 +1,9 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Alert,
   AlertDescription,
   AlertIcon,
@@ -31,6 +36,17 @@ import SubmitButton from "../../../components/Buttons/SubmitButton";
 import BackButton from "../../../components/Buttons/BackButton";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
 import UpdateEmployeeRequestParams from "../../../Models/Hr/Employee/UpdateEmployeeRequestParams";
+import CompanyDropdown from "../../../components/Dropdowns/CompanyDropdown";
+import CompanyResponseDto from "../../../Models/Hr/Company/CompanyResponseDto";
+import BranchDropdown from "../../../components/Dropdowns/BranchDropdown";
+import BranchResponseDto from "../../../Models/Hr/Branch/BranchResponseDto";
+import DepartmentDropdown from "../../../components/Dropdowns/DepartmentDropdown";
+import DepartmentResponseDto from "../../../Models/Hr/Department/DepartmentResponse";
+import SearchDepartmentsRequestParams from "../../../Models/Hr/Department/SearchDepartmentsRequestParams";
+import Common from "../../../utility/Common";
+import DepartmentDetailResponseDto from "../../../Models/Hr/Department/DepartmentDetailResponse";
+import DesignationDropdown from "../../../components/Dropdowns/DesignationDropdown";
+import DesignationResponseDto from "../../../Models/Hr/Designation/DesignationResponseDto";
 
 const AdminUpdateEmployee = () => {
   const [error, setError] = useState("");
@@ -56,11 +72,34 @@ const AdminUpdateEmployee = () => {
       ""
     )
   );
-  // console.log(employeeData);
+  const [departmentDetails, setDepartmentDetails] =
+    useState<DepartmentDetailResponseDto>();
+
+  // For dropdowns
+  const [companyId, setCompanyId] = useState("");
+  const [branchId, setBranchId] = useState("");
+  const [departmentId, setDepartmentId] = useState("");
 
   useEffect(() => {
     loadEmployee();
   }, []);
+
+  useEffect(() => {
+    loadDepartmentDetails();
+  }, [employeeData, departmentId]);
+
+  const loadDepartmentDetails = () => {
+    if (departmentId) {
+      axiosPrivate
+        .get("Departments/" + departmentId)
+        .then((res) => {
+          setDepartmentDetails(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   const loadEmployee = () => {
     if (employeeId) {
@@ -68,6 +107,7 @@ const AdminUpdateEmployee = () => {
         .get("Employees/" + employeeId)
         .then((res) => {
           setEmployeeData(res.data);
+          setDepartmentId(res.data.departmentId);
         })
         .catch((err) => {
           console.log(err);
@@ -164,14 +204,56 @@ const AdminUpdateEmployee = () => {
               <FormControl
                 isInvalid={!!errors.departmentId && touched.departmentId}
               >
-                <FormLabel htmlFor="departmentId">Department</FormLabel>
+                <FormLabel htmlFor="departmentId">
+                  Department
+                </FormLabel>
                 <Field
                   as={Input}
                   id="departmentId"
                   name="departmentId"
-                  type="text"
+                  type="hidden"
                 />
-                <Text fontSize={"xl"}>Select Company, Branch, Department</Text>
+                <Accordion allowMultiple>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          Dept: {departmentDetails?.name}, Branch:{" "}
+                          {departmentDetails?.branchName}, Company:{" "}
+                          {departmentDetails?.companyName}
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <CompanyDropdown
+                        selectedCompany={undefined}
+                        handleChange={(value: CompanyResponseDto) => {
+                          console.log("Company selected: " + value?.name);
+                          setCompanyId(value?.companyId || "");
+                        }}
+                      />
+                      <BranchDropdown
+                        companyId={companyId}
+                        selectedBranch={undefined}
+                        handleChange={(value: BranchResponseDto) => {
+                          console.log("Branch selected: " + value?.name);
+                          setBranchId(value?.branchId || "");
+                        }}
+                      />
+                      <DepartmentDropdown
+                        branchId={branchId}
+                        selectedDepartment={undefined}
+                        handleChange={(value: DepartmentResponseDto) => {
+                          console.log("Department selected: " + value?.name);
+                          setFieldValue("departmentId", value?.departmentId);
+                          setDepartmentId(value?.departmentId || "");
+                        }}
+                      />
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+
                 <FormErrorMessage>{errors.departmentId}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.firstName && touched.firstName}>
@@ -179,9 +261,16 @@ const AdminUpdateEmployee = () => {
                 <Field as={Input} id="firstName" name="firstName" type="text" />
                 <FormErrorMessage>{errors.firstName}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!errors.middleName && touched.middleName}>
+              <FormControl
+                isInvalid={!!errors.middleName && touched.middleName}
+              >
                 <FormLabel htmlFor="middleName">Middle Name</FormLabel>
-                <Field as={Input} id="middleName" name="middleName" type="text" />
+                <Field
+                  as={Input}
+                  id="middleName"
+                  name="middleName"
+                  type="text"
+                />
                 <FormErrorMessage>{errors.middleName}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.lastName && touched.lastName}>
@@ -189,9 +278,16 @@ const AdminUpdateEmployee = () => {
                 <Field as={Input} id="lastName" name="lastName" type="text" />
                 <FormErrorMessage>{errors.lastName}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!errors.phoneNumber && touched.phoneNumber}>
+              <FormControl
+                isInvalid={!!errors.phoneNumber && touched.phoneNumber}
+              >
                 <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
-                <Field as={Input} id="phoneNumber" name="phoneNumber" type="text" />
+                <Field
+                  as={Input}
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="text"
+                />
                 <FormErrorMessage>{errors.phoneNumber}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.hireDate && touched.hireDate}>
@@ -219,14 +315,34 @@ const AdminUpdateEmployee = () => {
                 <Field as={Input} id="cityId" name="cityId" type="text" />
                 <FormErrorMessage>{errors.cityId}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!errors.designationId && touched.designationId}>
+              <FormControl
+                isInvalid={!!errors.designationId && touched.designationId}
+              >
                 <FormLabel htmlFor="designationId">Designation</FormLabel>
-                <Field as={Input} id="designationId" name="designationId" type="text" />
+                <Field
+                  as={Input}
+                  id="designationId"
+                  name="designationId"
+                  type="text"
+                />
+                <DesignationDropdown
+                  selectedDesignation={undefined}
+                  handleChange={(value: DesignationResponseDto) => {
+                    setFieldValue("designationId", value.designationId);
+                  }}
+                />
                 <FormErrorMessage>{errors.designationId}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={!!errors.genderCode && touched.genderCode}>
+              <FormControl
+                isInvalid={!!errors.genderCode && touched.genderCode}
+              >
                 <FormLabel htmlFor="genderCode">Gender</FormLabel>
-                <Field as={Input} id="genderCode" name="genderCode" type="text" />
+                <Field
+                  as={Input}
+                  id="genderCode"
+                  name="genderCode"
+                  type="text"
+                />
                 <FormErrorMessage>{errors.genderCode}</FormErrorMessage>
               </FormControl>
               <Stack spacing={6}>

@@ -9,5 +9,6 @@ namespace hr.Dtos.Company
 {
     public class SearchCompaniesRequestDto : PagedRequestDto
     {
+        public Guid? CompanyId { get; set; }
     }
 }

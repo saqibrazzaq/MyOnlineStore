@@ -34,7 +34,8 @@ namespace hr
             // Department
             CreateMap<Department, DepartmentResponseDto>();
             CreateMap<Department, DepartmentDetailResponseDto>()
-                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Branch.Company.Name));
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Branch.Company.Name))
+                .ForMember(dest => dest.CompanyId, opt => opt.MapFrom(src => src.Branch.Company.CompanyId));
             CreateMap<CreateDepartmentRequestDto, Department>();
             CreateMap<UpdateDepartmentRequestDto, Department>();
 

@@ -44,6 +44,7 @@ const AdminListDepartments = () => {
     searchDepartments(
       new SearchDepartmentsRequestParams(
         branchId,
+        "",
         searchText,
         1,
         Common.DEFAULT_PAGE_SIZE,
@@ -84,6 +85,7 @@ const AdminListDepartments = () => {
       let previousPageNumber = (pagedRes?.metaData?.currentPage || 2) - 1;
       let searchParams = new SearchDepartmentsRequestParams(
         branchId,
+        "",
         searchText,
         previousPageNumber,
         Common.DEFAULT_PAGE_SIZE,
@@ -99,6 +101,7 @@ const AdminListDepartments = () => {
       let nextPageNumber = (pagedRes?.metaData?.currentPage || 0) + 1;
       let searchParams = new SearchDepartmentsRequestParams(
         branchId,
+        "",
         searchText,
         nextPageNumber,
         Common.DEFAULT_PAGE_SIZE,
@@ -205,6 +208,7 @@ const AdminListDepartments = () => {
               searchDepartments(
                 new SearchDepartmentsRequestParams(
                   branchId,
+                  "",
                   searchText,
                   1,
                   Common.DEFAULT_PAGE_SIZE,
@@ -222,6 +226,7 @@ const AdminListDepartments = () => {
             searchDepartments(
               new SearchDepartmentsRequestParams(
                 branchId,
+                "",
                 searchText,
                 1,
                 Common.DEFAULT_PAGE_SIZE,

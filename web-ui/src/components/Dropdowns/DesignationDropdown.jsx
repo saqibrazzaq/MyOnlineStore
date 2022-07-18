@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
 
-const CompanyDropdown = ({handleChange, selectedCompany}) => {
-  // console.log("selected company: " + selectedCompany?.name);
+const DesignationDropdown = ({handleChange, selectedDesignation}) => {
   const axiosPrivate = useAxiosAuth();
   const [inputValue, setInputValue] = useState("");
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadCompanies = () => {
+  const loadDesignations = () => {
     setIsLoading(true);
     axiosPrivate
-      .get("Companies/search", {
+      .get("Designations/search", {
         params: {
           searchText: inputValue,
         },
@@ -29,7 +28,7 @@ const CompanyDropdown = ({handleChange, selectedCompany}) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      loadCompanies();
+      loadDesignations();
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -41,16 +40,16 @@ const CompanyDropdown = ({handleChange, selectedCompany}) => {
   return (
     <Select
         getOptionLabel={(e) => e.name}
-        getOptionValue={(e) => e.companyId}
+        getOptionValue={(e) => e.designationId}
         options={items}
         onChange={handleChange}
         onInputChange={handleInputChange}
         isClearable={true}
-        placeholder="Select company..."
+        placeholder="Select designation..."
         isLoading={isLoading}
-        value={selectedCompany}
+        value={selectedDesignation}
       ></Select>
   )
 }
 
-export default CompanyDropdown
+export default DesignationDropdown

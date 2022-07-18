@@ -10,7 +10,7 @@ namespace hr.Dtos.Department
 {
     public class SearchDepartmentRequestDto : PagedRequestDto
     {
-        [Required]
         public Guid? BranchId { get; set; }
+        public Guid? DepartmentId { get; set; }
     }
 }

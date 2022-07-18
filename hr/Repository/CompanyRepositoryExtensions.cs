@@ -19,11 +19,11 @@ namespace hr.Repository
                 );
             }
 
-            //if (searchParams.StateId != null && searchParams.StateId != Guid.Empty)
-            //{
-            //    itemsToReturn = itemsToReturn.Where(
-            //        x => x.StateId == searchParams.StateId);
-            //}
+            if (searchParams.CompanyId != null && searchParams.CompanyId != Guid.Empty)
+            {
+                itemsToReturn = itemsToReturn.Where(
+                    x => x.CompanyId == searchParams.CompanyId);
+            }
 
 
             return itemsToReturn;

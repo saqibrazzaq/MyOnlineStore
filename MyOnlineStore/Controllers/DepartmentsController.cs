@@ -25,7 +25,7 @@ namespace MyOnlineStore.Controllers
 
         [HttpGet("search")]
         [Authorize(Roles = Constants.AllRoles)]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Search ([FromQuery] SearchDepartmentRequestDto dto)
         {
             dto.AccountId = (await _userService.GetLoggedInUser()).AccountId;
