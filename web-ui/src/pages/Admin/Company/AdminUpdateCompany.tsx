@@ -73,8 +73,7 @@ const AdminUpdateCompany = () => {
     name: Yup.string().required("Name is required"),
     address1: Yup.string().max(500, "Maximum 500 characters."),
     address2: Yup.string().max(500, "Maximum 500 characters."),
-    cityId: Yup.string(),
-    accountId: Yup.string(),
+    cityId: Yup.string()
   });
 
   const submitForm = (values: UpdateCompanyRequestParams) => {
@@ -160,12 +159,6 @@ const AdminUpdateCompany = () => {
               <FormControl isInvalid={!!errors.name && touched.name}>
                 <FormLabel htmlFor="name">Company Name</FormLabel>
                 <Field as={Input} id="name" name="name" type="text" />
-                <Field
-                  as={Input}
-                  id="accountId"
-                  name="accountId"
-                  type="hidden"
-                />
                 <FormErrorMessage>{errors.name}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.address1 && touched.address1}>

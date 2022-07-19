@@ -59,6 +59,8 @@ import DesignationDropdown from "../../../components/Dropdowns/DesignationDropdo
 import DesignationResponseDto from "../../../Models/Hr/Designation/DesignationResponseDto";
 import DesignationDetailResponseDto from "../../../Models/Hr/Designation/DesignationDetailResponseDto";
 import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
+import GenderDropdown from "../../../components/Dropdowns/GenderDropdown";
+import GenderResponseDto from "../../../Models/Hr/Gender/GenderResponseDto";
 
 const AdminUpdateEmployee = () => {
   const [error, setError] = useState("");
@@ -94,20 +96,36 @@ const AdminUpdateEmployee = () => {
   const [branchId, setBranchId] = useState("");
   const [departmentId, setDepartmentId] = useState("");
   const [designationId, setDesignationId] = useState("");
+  const [genderCode, setGenderCode] = useState("");
 
-  const [isEditing, setIsEditing] = useBoolean();
+  const [genderDetails, setGenderDetails] = useState<GenderResponseDto>();
 
+  
   useEffect(() => {
     loadEmployee();
   }, []);
 
   useEffect(() => {
+    loadGenderDetails();
+  }, [genderCode]);
+
+  useEffect(() => {
     loadDepartmentDetails();
-  }, [employeeData, departmentId]);
+  }, [departmentId]);
 
   useEffect(() => {
     loadDesignationDetails();
-  }, [employeeData, designationId]);
+  }, [designationId]);
+
+  const loadGenderDetails = () => {
+    if (genderCode) {
+      axiosPrivate.get("Genders/" + genderCode).then(res => {
+        setGenderDetails(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+  }
 
   const loadDesignationDetails = () => {
     if (designationId) {
@@ -143,6 +161,7 @@ const AdminUpdateEmployee = () => {
           setEmployeeData(res.data);
           setDepartmentId(res.data.departmentId);
           setDesignationId(res.data.designationId);
+          setGenderCode(res.data.genderCode);
         })
         .catch((err) => {
           console.log(err);
@@ -364,30 +383,13 @@ const AdminUpdateEmployee = () => {
                   name="designationId"
                   type="hidden"
                 />
-                <Popover placement="bottom-start">
-                  <PopoverTrigger>
-                    <HStack>
-                      <Text>{designationDetails?.name}</Text>
-                      <UpdateIconButton />
-                    </HStack>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <PopoverHeader fontWeight="semibold">
-                      Update Designation
-                    </PopoverHeader>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverBody>
-                      <DesignationDropdown
-                        selectedDesignation={undefined}
+                <DesignationDropdown
+                        selectedDesignation={designationDetails}
                         handleChange={(value: DesignationResponseDto) => {
                           setFieldValue("designationId", value.designationId);
                           setDesignationId(value?.designationId || "");
                         }}
                       />
-                    </PopoverBody>
-                  </PopoverContent>
-                </Popover>
 
                 <FormErrorMessage>{errors.designationId}</FormErrorMessage>
               </FormControl>
@@ -399,7 +401,14 @@ const AdminUpdateEmployee = () => {
                   as={Input}
                   id="genderCode"
                   name="genderCode"
-                  type="text"
+                  type="hidden"
+                />
+                <GenderDropdown
+                  selectedGender={genderDetails}
+                  handleChange={(value: GenderResponseDto) => {
+                    setFieldValue("genderCode", value?.genderCode);
+                    setGenderCode(value.genderCode || "");
+                  }}
                 />
                 <FormErrorMessage>{errors.genderCode}</FormErrorMessage>
               </FormControl>
