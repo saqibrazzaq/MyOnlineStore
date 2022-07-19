@@ -140,6 +140,7 @@ const AdminDeleteDepartment = () => {
       .then((res) => {
         // console.log(res.data);
         setDepartment(res.data);
+        setError("");
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;

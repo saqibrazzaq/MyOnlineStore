@@ -36,9 +36,6 @@ import CancelButton from "../../../components/Buttons/CancelButton";
 import DeleteButton from "../../../components/Buttons/DeleteButton";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
-import AuthModel from "../../../Models/User/AuthModel";
-import useAuth from "../../../hooks/useAuth";
-import DeleteCompanyRequestParams from "../../../Models/Hr/Company/DeleteCompanyRequestParams";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
 import BranchDetailResponseDto from "../../../Models/Hr/Branch/BranchDetailResponse";
 
@@ -163,6 +160,7 @@ const AdminDeleteBranch = () => {
       .then((res) => {
         // console.log(res.data);
         setBranch(res.data);
+        setError("");
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;

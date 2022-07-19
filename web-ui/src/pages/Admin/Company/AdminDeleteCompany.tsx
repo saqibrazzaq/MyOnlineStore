@@ -169,6 +169,7 @@ const AdminDeleteCompany = () => {
       .then((res) => {
         // console.log(res.data);
         setCompany(res.data);
+        setError("");
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;

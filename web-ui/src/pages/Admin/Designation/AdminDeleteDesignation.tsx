@@ -140,6 +140,7 @@ const AdminDeleteDesignation = () => {
       .then((res) => {
         // console.log(res.data);
         setDesignation(res.data);
+        setError("");
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;

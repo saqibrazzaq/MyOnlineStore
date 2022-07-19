@@ -61,6 +61,9 @@ import DesignationDetailResponseDto from "../../../Models/Hr/Designation/Designa
 import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
 import GenderDropdown from "../../../components/Dropdowns/GenderDropdown";
 import GenderResponseDto from "../../../Models/Hr/Gender/GenderResponseDto";
+import CityStateCountryDropdown from "../../../components/Dropdowns/CityStateCountryDropdown";
+import CityResponseDto from "../../../Models/Cities/City/CityResponseDto";
+import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
 
 const AdminUpdateEmployee = () => {
   const [error, setError] = useState("");
@@ -97,10 +100,11 @@ const AdminUpdateEmployee = () => {
   const [departmentId, setDepartmentId] = useState("");
   const [designationId, setDesignationId] = useState("");
   const [genderCode, setGenderCode] = useState("");
+  const [cityId, setCityId] = useState<string>();
+  const [selectedCity, setSelectedCity] = useState<CityDetailResponseDto>();
 
   const [genderDetails, setGenderDetails] = useState<GenderResponseDto>();
 
-  
   useEffect(() => {
     loadEmployee();
   }, []);
@@ -119,13 +123,16 @@ const AdminUpdateEmployee = () => {
 
   const loadGenderDetails = () => {
     if (genderCode) {
-      axiosPrivate.get("Genders/" + genderCode).then(res => {
-        setGenderDetails(res.data);
-      }).catch(err => {
-        console.log(err);
-      })
+      axiosPrivate
+        .get("Genders/" + genderCode)
+        .then((res) => {
+          setGenderDetails(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }
+  };
 
   const loadDesignationDetails = () => {
     if (designationId) {
@@ -162,6 +169,20 @@ const AdminUpdateEmployee = () => {
           setDepartmentId(res.data.departmentId);
           setDesignationId(res.data.designationId);
           setGenderCode(res.data.genderCode);
+          setCityId(res.data.cityId);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const loadCityDetails = () => {
+    if (cityId) {
+      axiosPrivate
+        .get("Cities/" + cityId)
+        .then((res) => {
+          setSelectedCity(res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -370,8 +391,38 @@ const AdminUpdateEmployee = () => {
               </FormControl>
               <FormControl isInvalid={!!errors.cityId && touched.cityId}>
                 <FormLabel htmlFor="cityId">City</FormLabel>
-                <Field as={Input} id="cityId" name="cityId" type="text" />
+                <Field as={Input} id="cityId" name="cityId" type="hidden" />
                 <FormErrorMessage>{errors.cityId}</FormErrorMessage>
+                <Popover placement="bottom-start">
+                  <PopoverTrigger>
+                    <HStack>
+                      <Text>
+                        {selectedCity?.name},{" "}
+                        {selectedCity?.stateName},{" "}
+                        {selectedCity?.countryName}
+                      </Text>
+                      <UpdateIconButton />
+                    </HStack>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverHeader fontWeight="semibold">
+                      Update City
+                    </PopoverHeader>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverBody>
+                      <CityStateCountryDropdown
+                        cityId={cityId}
+                        handleChange={(newValue?: CityResponseDto) => {
+                          // console.log("city in company update: " + newValue?.name);
+                          setFieldValue("cityId", newValue?.cityId);
+                          setCityId(newValue?.cityId);
+                          loadCityDetails();
+                        }}
+                      ></CityStateCountryDropdown>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
               </FormControl>
               <FormControl
                 isInvalid={!!errors.designationId && touched.designationId}
@@ -384,12 +435,12 @@ const AdminUpdateEmployee = () => {
                   type="hidden"
                 />
                 <DesignationDropdown
-                        selectedDesignation={designationDetails}
-                        handleChange={(value: DesignationResponseDto) => {
-                          setFieldValue("designationId", value.designationId);
-                          setDesignationId(value?.designationId || "");
-                        }}
-                      />
+                  selectedDesignation={designationDetails}
+                  handleChange={(value: DesignationResponseDto) => {
+                    setFieldValue("designationId", value.designationId);
+                    setDesignationId(value?.designationId || "");
+                  }}
+                />
 
                 <FormErrorMessage>{errors.designationId}</FormErrorMessage>
               </FormControl>

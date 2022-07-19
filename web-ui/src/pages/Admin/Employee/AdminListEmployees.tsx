@@ -198,7 +198,7 @@ const AdminListEmployees = () => {
         <Link as={RouteLink} to={"/admin/company/employees/update"}>
           <RegularButton text="Create Employee" />
         </Link>
-        <Link ml={2} as={RouteLink} to="/admin/company/employees/list">
+        <Link ml={2} as={RouteLink} to="/admin/company/list">
           <BackButton />
         </Link>
       </Box>
