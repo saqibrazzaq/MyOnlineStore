@@ -23,6 +23,7 @@ import SubmitButton from "../../components/Buttons/SubmitButton";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
 import { useNavigate } from "react-router-dom";
+import { ErrorAlert, SuccessAlert } from "../../Models/Error/AlertBoxes";
 
 const ForgotPassword = () => {
   let data = new ForgotPasswordDto("saqibrazzaq@gmail.com");
@@ -86,29 +87,13 @@ const ForgotPassword = () => {
     </Formik>
   );
 
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Email sent</AlertTitle>
-      <AlertDescription>{success}</AlertDescription>
-    </Alert>
-  );
-
   return (
     <Box p={4} justifySelf="center">
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         <Heading fontSize={"2xl"}>Forgot Password</Heading>
         <Text fontSize={"lg"}>You will get an email with pin code.</Text>
-        {error && showError()}
-        {success && showSuccess()}
+        {error && <ErrorAlert description={error} />}
+        {success && <SuccessAlert description={success} />}
         {showForm()}
       </Stack>
     </Box>

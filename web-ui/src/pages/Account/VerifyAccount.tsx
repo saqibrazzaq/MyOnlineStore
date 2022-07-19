@@ -27,6 +27,7 @@ import VerifyEmailDto from "../../Models/User/VerifyEmailDto";
 import * as Yup from "yup";
 import { Field, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { ErrorAlert, SuccessAlert } from "../../Models/Error/AlertBoxes";
 
 const VerifyAccount = () => {
   const axiosPrivate = useAxiosAuth();
@@ -109,37 +110,9 @@ const VerifyAccount = () => {
       });
   };
 
-  const showEmailVerificationError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Pin code error</AlertTitle>
-      <AlertDescription>{verifyEmailError}</AlertDescription>
-    </Alert>
-  );
-
-  const showEmailVerificationSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Email verified</AlertTitle>
-      <AlertDescription>{verifyEmailSuccess}</AlertDescription>
-    </Alert>
-  );
-
-  const showAccountVerifiedSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Account verified</AlertTitle>
-      <AlertDescription></AlertDescription>
-    </Alert>
-  );
-
   const showAccountVerifiedError = () => (
     <Box>
-      <Alert status="error">
-        <AlertIcon />
-        <AlertTitle>Account is not verified</AlertTitle>
-        <AlertDescription>{sendEmailerror}</AlertDescription>
-      </Alert>
+      <ErrorAlert description={sendEmailerror} />
 
       <Button onClick={sendVerificationEmail} colorScheme="blue" mt={4}>
         Send Verification Email
@@ -159,8 +132,8 @@ const VerifyAccount = () => {
         {({ handleSubmit, errors, touched }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={9} as={Container} maxW={"3xl"}>
-              {verifyEmailError && showEmailVerificationError()}
-              {verifyEmailSuccess && showEmailVerificationSuccess()}
+              {verifyEmailError && <ErrorAlert description={verifyEmailError} />}
+              {verifyEmailSuccess && <SuccessAlert description={verifyEmailSuccess} />}
               <FormControl isInvalid={!!errors.pinCode && touched.pinCode}>
                 <FormLabel htmlFor="pinCode">
                   Email sent, Enter Pin Code
@@ -192,7 +165,7 @@ const VerifyAccount = () => {
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         <Heading fontSize={"xl"}>Verify Account</Heading>
         {user?.emailConfirmed
-          ? showAccountVerifiedSuccess()
+          ? <ErrorAlert description={"Account verified"} />
           : showAccountVerifiedError()}
 
         {sendEmailSuccess && showPinCodeForm()}

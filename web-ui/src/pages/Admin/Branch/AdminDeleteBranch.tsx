@@ -38,6 +38,7 @@ import useAxiosAuth from "../../../hooks/useAxiosAuth";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
 import BranchDetailResponseDto from "../../../Models/Hr/Branch/BranchDetailResponse";
+import { ErrorAlert } from "../../../Models/Error/AlertBoxes";
 
 const AdminDeleteBranch = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -71,14 +72,6 @@ const AdminDeleteBranch = () => {
         setError(errDetails?.Message || "Service failed");
       });
   };
-
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
 
   const showBranchInfo = () => (
     <div>
@@ -200,7 +193,7 @@ const AdminDeleteBranch = () => {
         <Text fontSize="xl">
           Are you sure you want to delete the following branch?
         </Text>
-        {error && showError()}
+        {error && <ErrorAlert description={error} />}
         {showBranchInfo()}
       </Stack>
       {showAlertDialog()}

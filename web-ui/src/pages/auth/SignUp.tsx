@@ -22,6 +22,7 @@ import YupPassword from "yup-password";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import useAuth from "../../hooks/useAuth";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
+import { ErrorAlert, SuccessAlert } from "../../Models/Error/AlertBoxes";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
 import AuthenticationResponseDto from "../../Models/User/AuthenticationResponseDto";
 import AuthModel from "../../Models/User/AuthModel";
@@ -151,28 +152,13 @@ const SignUp = () => {
     </Formik>
   );
 
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Account created</AlertTitle>
-      <AlertDescription>{success}</AlertDescription>
-    </Alert>
-  );
   return (
     <Stack minH={"50vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align="center" justify={"center"}>
         <Stack spacing={4} w={"full"} maxW={"md"}>
           <Heading fontSize={"2xl"}>Create New Account</Heading>
-          {error && showError()}
-          {success && showSuccess()}
+          {error && <ErrorAlert description={error} />}
+          {success && <SuccessAlert description={success} />}
           {showForm()}
         </Stack>
       </Flex>

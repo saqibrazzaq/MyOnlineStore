@@ -23,6 +23,7 @@ import YupPassword from "yup-password";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
+import { ErrorAlert, SuccessAlert } from "../../Models/Error/AlertBoxes";
 YupPassword(Yup); // extend yup
 
 const ResetPassword = () => {
@@ -36,22 +37,6 @@ const ResetPassword = () => {
     "saqibrazzaq@gmail.com",
     "Saqib123!",
     "Saqib123!"
-  );
-
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Password reset successfull</AlertTitle>
-      <AlertDescription>{success}</AlertDescription>
-    </Alert>
   );
 
   const submitForm = (values: ResetPasswordDto) => {
@@ -159,8 +144,8 @@ const ResetPassword = () => {
         <Text fontSize={"lg"}>
           Please check your email for the reset password token.
         </Text>
-        {error && showError()}
-        {success && showSuccess()}
+        {error && <ErrorAlert description={error} />}
+        {success && <SuccessAlert description={success} />}
         {showForm()}
       </Stack>
     </Box>

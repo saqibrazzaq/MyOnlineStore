@@ -34,6 +34,7 @@ import UpdateBranchRequestParams from "../../../Models/Hr/Branch/UpdateBranchReq
 import UpdateDepartmentRequestParams from "../../../Models/Hr/Department/UpdateDepartmentRequestParams";
 import BranchDetailResponseDto from "../../../Models/Hr/Branch/BranchDetailResponse";
 import UpdateDesignationRequestParams from "../../../Models/Hr/Designation/UpdateDesignationRequestParams";
+import { ErrorAlert, SuccessAlert } from "../../../Models/Error/AlertBoxes";
 
 const AdminUpdateDesignation = () => {
   const [error, setError] = useState("");
@@ -113,22 +114,6 @@ const AdminUpdateDesignation = () => {
       });
   };
 
-  const showUpdateError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Designation update error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showUpdateSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Designation updated</AlertTitle>
-      <AlertDescription>{success}</AlertDescription>
-    </Alert>
-  );
-
   const showUpdateForm = () => (
     <Box p={0}>
       <Formik
@@ -142,8 +127,8 @@ const AdminUpdateDesignation = () => {
         {({ handleSubmit, errors, touched, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={4} as={Container} maxW={"3xl"}>
-              {error && showUpdateError()}
-              {success && showUpdateSuccess()}
+              {error && <ErrorAlert description={error} />}
+              {success && <SuccessAlert description={success} />}
               <FormControl isInvalid={!!errors.name && touched.name}>
                 <FormLabel htmlFor="name">Designation Name</FormLabel>
                 <Field as={Input} id="name" name="name" type="text" />

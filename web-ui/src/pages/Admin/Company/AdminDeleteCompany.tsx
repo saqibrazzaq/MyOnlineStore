@@ -42,6 +42,7 @@ import AuthModel from "../../../Models/User/AuthModel";
 import useAuth from "../../../hooks/useAuth";
 import DeleteCompanyRequestParams from "../../../Models/Hr/Company/DeleteCompanyRequestParams";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
+import { ErrorAlert } from "../../../Models/Error/AlertBoxes";
 
 const AdminDeleteCompany = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -78,14 +79,6 @@ const AdminDeleteCompany = () => {
         setError(errDetails?.Message || "Service failed");
       });
   };
-
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
 
   const showCompanyInfo = () => (
     <div>
@@ -209,7 +202,7 @@ const AdminDeleteCompany = () => {
         <Text fontSize="xl">
           Are you sure you want to delete the following company?
         </Text>
-        {error && showError()}
+        {error && <ErrorAlert description={error} />}
         {showCompanyInfo()}
       </Stack>
       {showAlertDialog()}

@@ -23,6 +23,7 @@ import ErrorDetails from "../../Models/Error/ErrorDetails";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import { ErrorAlert } from "../../Models/Error/AlertBoxes";
 
 const ProfilePicture = () => {
   const [error, setError] = useState("");
@@ -60,14 +61,6 @@ const ProfilePicture = () => {
       position: "top-right",
     });
   }
-
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
 
   const showImage = () => <Image boxSize="200px" src={image} />;
 
@@ -121,7 +114,7 @@ const ProfilePicture = () => {
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         <Heading fontSize={"xl"}>User Profile Picture</Heading>
-        {error && showError()}
+        {error && <ErrorAlert description={error} />}
         {image && showImage()}
         {showForm()}
       </Stack>

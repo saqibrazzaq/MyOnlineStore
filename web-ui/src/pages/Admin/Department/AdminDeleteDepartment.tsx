@@ -35,6 +35,7 @@ import BackButton from "../../../components/Buttons/BackButton";
 import CancelButton from "../../../components/Buttons/CancelButton";
 import DeleteButton from "../../../components/Buttons/DeleteButton";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
+import { ErrorAlert } from "../../../Models/Error/AlertBoxes";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
 import DepartmentDetailResponseDto from "../../../Models/Hr/Department/DepartmentDetailResponse";
 
@@ -70,15 +71,7 @@ const AdminDeleteDepartment = () => {
       });
   };
 
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showDepartmentInfo = () => (
+ const showDepartmentInfo = () => (
     <div>
       <TableContainer>
         <Table variant="simple">
@@ -168,7 +161,7 @@ const AdminDeleteDepartment = () => {
         <Text fontSize="xl">
           Are you sure you want to delete the following Department?
         </Text>
-        {error && showError()}
+        {error && <ErrorAlert description={error} />}
         {showDepartmentInfo()}
       </Stack>
       {showAlertDialog()}

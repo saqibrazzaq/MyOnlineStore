@@ -32,6 +32,7 @@ import UpdateBranchRequestParams from "../../../Models/Hr/Branch/UpdateBranchReq
 import CompanyDropdown from "../../../components/Dropdowns/CompanyDropdown";
 import BranchResponseDto from "../../../Models/Hr/Branch/BranchResponseDto";
 import CompanyResponseDto from "../../../Models/Hr/Company/CompanyResponseDto";
+import { ErrorAlert, SuccessAlert } from "../../../Models/Error/AlertBoxes";
 
 const AdminUpdateBranch = () => {
   const [selectedCity, setSelectedCity] = useState<CityDetailResponseDto>();
@@ -130,22 +131,6 @@ const AdminUpdateBranch = () => {
       });
   };
 
-  const showUpdateError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Branch update error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showUpdateSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Branch updated</AlertTitle>
-      <AlertDescription>{success}</AlertDescription>
-    </Alert>
-  );
-
   const loadCityDetails = () => {
     if (cityId) {
       axiosPrivate
@@ -172,8 +157,8 @@ const AdminUpdateBranch = () => {
         {({ handleSubmit, errors, touched, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={4} as={Container} maxW={"3xl"}>
-              {error && showUpdateError()}
-              {success && showUpdateSuccess()}
+              {error && <ErrorAlert description={error} />}
+              {success && <SuccessAlert description={success} />}
               <FormControl isInvalid={!!errors.companyId && touched.companyId}>
                 <FormLabel htmlFor="companyId">Company</FormLabel>
                 <Field

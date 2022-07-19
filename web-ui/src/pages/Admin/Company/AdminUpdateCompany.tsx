@@ -30,6 +30,7 @@ import CityResponseDto from "../../../Models/Cities/City/CityResponseDto";
 import CityStateCountryDropdown from "../../../components/Dropdowns/CityStateCountryDropdown";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
 import useAxiosAuth from "../../../hooks/useAxiosAuth";
+import { ErrorAlert, SuccessAlert } from "../../../Models/Error/AlertBoxes";
 
 const AdminUpdateCompany = () => {
   const [selectedCity, setSelectedCity] = useState<CityDetailResponseDto>();
@@ -115,22 +116,6 @@ const AdminUpdateCompany = () => {
       });
   };
 
-  const showUpdateError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Company update error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showUpdateSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Company updated</AlertTitle>
-      <AlertDescription>{success}</AlertDescription>
-    </Alert>
-  );
-
   const loadCityDetails = () => {
     if (cityId) {
       axiosPrivate.get("Cities/" + cityId).then(res => {
@@ -154,8 +139,8 @@ const AdminUpdateCompany = () => {
         {({ handleSubmit, errors, touched, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={4} as={Container} maxW={"3xl"}>
-              {error && showUpdateError()}
-              {success && showUpdateSuccess()}
+              {error && <ErrorAlert description={error} />}
+              {success && <SuccessAlert description={success} />}
               <FormControl isInvalid={!!errors.name && touched.name}>
                 <FormLabel htmlFor="name">Company Name</FormLabel>
                 <Field as={Input} id="name" name="name" type="text" />

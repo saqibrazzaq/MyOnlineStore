@@ -40,6 +40,7 @@ import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailRespons
 import BranchDetailResponseDto from "../../../Models/Hr/Branch/BranchDetailResponse";
 import EmployeeDetailResponseDto from "../../../Models/Hr/Employee/EmployeeDetailResponseDto";
 import DepartmentDetailResponseDto from "../../../Models/Hr/Department/DepartmentDetailResponse";
+import { ErrorAlert } from "../../../Models/Error/AlertBoxes";
 
 const AdminDeleteEmployee = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,14 +74,6 @@ const AdminDeleteEmployee = () => {
         setError(errDetails?.Message || "Service failed");
       });
   };
-
-  const showError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
 
   const showEmployeeInfo = () => (
     <div>
@@ -195,7 +188,7 @@ const AdminDeleteEmployee = () => {
         <Text fontSize="xl">
           Are you sure you want to delete the following employee?
         </Text>
-        {error && showError()}
+        {error && <ErrorAlert description={error} />}
         {showEmployeeInfo()}
       </Stack>
       {showAlertDialog()}

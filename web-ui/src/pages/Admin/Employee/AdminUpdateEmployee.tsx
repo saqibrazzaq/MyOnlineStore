@@ -64,6 +64,7 @@ import GenderResponseDto from "../../../Models/Hr/Gender/GenderResponseDto";
 import CityStateCountryDropdown from "../../../components/Dropdowns/CityStateCountryDropdown";
 import CityResponseDto from "../../../Models/Cities/City/CityResponseDto";
 import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
+import { ErrorAlert, SuccessAlert } from "../../../Models/Error/AlertBoxes";
 
 const AdminUpdateEmployee = () => {
   const [error, setError] = useState("");
@@ -245,22 +246,6 @@ const AdminUpdateEmployee = () => {
       });
   };
 
-  const showUpdateError = () => (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Employee update error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  );
-
-  const showUpdateSuccess = () => (
-    <Alert status="success">
-      <AlertIcon />
-      <AlertTitle>Employee updated</AlertTitle>
-      <AlertDescription>{success}</AlertDescription>
-    </Alert>
-  );
-
   const showUpdateForm = () => (
     <Box p={0}>
       <Formik
@@ -274,8 +259,8 @@ const AdminUpdateEmployee = () => {
         {({ handleSubmit, errors, touched, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={4} as={Container} maxW={"3xl"}>
-              {error && showUpdateError()}
-              {success && showUpdateSuccess()}
+              {error && <ErrorAlert description={error} />}
+              {success && <SuccessAlert description={success} />}
               <FormControl
                 isInvalid={!!errors.departmentId && touched.departmentId}
               >
